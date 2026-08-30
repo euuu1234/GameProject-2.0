@@ -1,3 +1,4 @@
+import {exportar} from "./interface/config.js";
 const cor1 = 'rgb(0, 150, 20)';
 const cor2 = 'white';
 const cor3 = 'rgb(150,3,70)';
@@ -26,6 +27,13 @@ const player = {
     element: null,
     jump: 1.1,
 };
+const configFase = {
+    width: 800,
+    height: 600,
+    proporcao: 15,
+    gravity: 0.2,
+    tamanhoMinimo: player.tamanho.height * 0.5,
+};
 const elementosDoJogo = [
     {
         position: {
@@ -33,8 +41,8 @@ const elementosDoJogo = [
             y: 0,
         },
         tamanho: {
-            width: 120,
-            height: 5,
+            width: emForPx(window.screen.width),
+            height: 3,
         },
         color: cor1,
         element: null,
@@ -42,19 +50,19 @@ const elementosDoJogo = [
     {
         position: {
             x: 20,
-            y: 5.1,
+            y: 3,
         },
         tamanho: {
             width: 50,
-            height: 3,
+            height: 5,
         },
         color: cor3,
         element: null,
     },
     {
         position: {
-            x: 0.1,
-            y: 14.5,
+            x: 0,
+            y: 14,
         },
         tamanho: {
             width: 50,
@@ -66,7 +74,7 @@ const elementosDoJogo = [
     {
         position: {
             x: 55,
-            y: 8.2,
+            y: 8,
         },
         tamanho: {
             width: 5,
@@ -88,13 +96,6 @@ const elementosDoJogo = [
         element: null,
     }
 ];
-const configFase = {
-    width: 800,
-    height: 600,
-    proporcao: 15,
-    gravity: 0.2,
-    tamanhoMinimo: player.tamanho.height * 0.5,
-};
 
 player.fisica.velYMax = configFase.tamanhoMinimo;
 
@@ -223,6 +224,7 @@ function emForPx(number){
             }
     }
 
+        exportar()
     const onLoad = [
         function() {
             document.querySelectorAll('*').forEach ((element) => {
@@ -242,7 +244,6 @@ function emForPx(number){
                     div.style.position = 'fixed'
                     div.style.bottom = element.position.y + "em"
                     div.style.left = element.position.x + "em"
-                    div.style.border = '1px solid black'
                     
 
                     element.element = div
@@ -374,7 +375,6 @@ function emForPx(number){
 
 const pixelsTela = window.screen.width
 const emTela = emForPx(pixelsTela)
-console.log(emTela)
 
 const blocoFim = {
     tamanho:{
