@@ -1,3 +1,7 @@
+*{
+    user-select: none;
+}
+
 #canvas{
     position: fixed;
     top: 0;
@@ -30,6 +34,7 @@
     display: flex;
     text-align: left;
     padding: 0.5em;
+    cursor: pointer;
 }
 .item_menu_vertical input{
     margin-left: auto;
@@ -49,4 +54,7 @@
 .menu .fechar:hover{
     scale: 1.05;
     cursor: pointer;
+    background-color: rgb(63, 80, 231);
+    color: rgb(240, 236, 8);
+    text-shadow: none;
 }
