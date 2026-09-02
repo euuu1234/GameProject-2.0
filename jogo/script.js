@@ -9,12 +9,13 @@ let btnLeft = false;
 let btnUp = false;
 let btnDown = false;
 let animationFrameId = null;
+let jogoRodando = false;
 
 
 const player = {
     position:{
         x: 1,
-        y: 5,
+        y: 3,
     },
     tamanho:{
         width: 2,
@@ -34,6 +35,10 @@ const configFase = {
     proporcao: 15,
     gravity: 0.2,
     tamanhoMinimo: player.tamanho.height * 0.5,
+    positionInitial: {
+        x: player.position.x,
+        y: player.position.y
+    }
 };
 const elementosDoJogo = [
     {
@@ -46,6 +51,66 @@ const elementosDoJogo = [
             height: 3,
         },
         color: cor1,
+        element: null,
+    },
+    {
+        position: {
+            x: 13,
+            y: 10,
+        },
+        tamanho: {
+            width: 5,
+            height: 15,
+        },
+        color: cor3,
+        element: null,
+    },
+    {
+        position: {
+            x: 58,
+            y: 20,
+        },
+        tamanho: {
+            width: 5,
+            height: 3,
+        },
+        color: cor3,
+        element: null,
+    },
+    {
+        position: {
+            x: 66,
+            y: 26,
+        },
+        tamanho: {
+            width: 5,
+            height: 3,
+        },
+        color: cor3,
+        element: null,
+    },
+    {
+        position: {
+            x: 49,
+            y: 30,
+        },
+        tamanho: {
+            width: 11,
+            height: 3,
+        },
+        color: cor3,
+        element: null,
+    },
+    {
+        position: {
+            x: 30,
+            y: 30,
+        },
+        tamanho: {
+            width: 11,
+            height: 3,
+        },
+        color: cor3,
         element: null,
     },
     {
@@ -97,20 +162,42 @@ const elementosDoJogo = [
         element: null,
     }
 ];
-/* const elementosFuncionais = [
+const elementosFuncionais = [
     {
         position: {
-            x: 20,
-            y: 60
+            x: 1,
+            y: 17
         },
         tamanho: {
-            width: 1,
-            height: 3
+            width: 5,
+            height: 7
         },
-        src: './Assets/img-elementos_animados/porta.png',
-        funcao: null
+        src: './Assets/img-elementos_animados/portal.png',
+        funcao: function() {
+            acoesInterface.stopGame();
+
+            const menuFaseVencida = document.createElement('main');
+            menuFaseVencida.style.backgroundColor = 'rgba(250, 200, 20, 0.865)';
+            menuFaseVencida.classList.add('menu');
+            menuFaseVencida.style.display = 'flex';
+            menuFaseVencida.style.position = 'fixed';
+
+
+            
+            
+            async function fetchMenuFaseVencida() {
+                const response = await fetch('./interface/menu_fase-vencida.html');
+                const html = await response.text();
+
+                menuFaseVencida.innerHTML = html;
+            }
+
+            fetchMenuFaseVencida();
+            document.body.appendChild(menuFaseVencida);
+        },
+        animation: null,
     }
-] */
+]
 
 player.fisica.velYMax = configFase.tamanhoMinimo;
 
@@ -214,24 +301,28 @@ function emForPx(number){
     }
 
     const acoesInterface = {
-        startGame: 
+        startGame:
             function() {
-                if (animationFrameId === null) {
+                if (!jogoRodando) {
+                    jogoRodando = true;
                     animationFrameId = requestAnimationFrame(gameLoop);
-                    console.log('aaaaaaaaaaa')
                 }
             },
 
-        stopGame: 
+        stopGame:
             function() {
-                cancelAnimationFrame(animationFrameId);
-                animationFrameId = null;
+                jogoRodando = false;
+
+                if (animationFrameId !== null) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
             },
 
         resetGame:
             function() {
-                player.position.x = 0;
-                player.position.y = 0;
+                player.position.x = configFase.positionInitial.x;
+                player.position.y = configFase.positionInitial.y;
                 player.fisica.velocityX = 0;
                 player.fisica.velocityY = 0;
             },
@@ -275,11 +366,14 @@ function emForPx(number){
             player.element = element;
             document.getElementById('canvas').appendChild(element);
 
-            //atributos do element (player)
             element.style.width = player.tamanho.width + "em";
             element.style.height = player.tamanho.height + "em";
-            element.style.backgroundColor = 'red';
+
+            element.style.backgroundColor = 'yellow';
             element.style.position = 'absolute';
+
+            element.style.zIndex = '9999';
+
             element.style.left = player.position.x +'em';
             element.style.bottom = player.position.y +'em';
         },
@@ -325,18 +419,24 @@ function emForPx(number){
                     if(event.target.closest('.startador')){
                         acoesInterface.startGame()
                     }
+                    if(event.target.closest('.resetador')){
+                        acoesInterface.restartGame();
+                        if(document.querySelector('#fases')){
+                            document.querySelector('#fases').closest('.menu').remove();
+                        }
+                    }
                 });
             } 
     ]
 
     const gerenciaColisao = {
-        checkIntersection: function(somar){
+        checkIntersection: function(somar, grupoDeElementos = elementosDoJogo){
             const ladosPlayer = everywherePosition(player);
             let verificacao = [
                 false
             ]
-
-            for (const element of elementosDoJogo) {
+            
+            for (const element of grupoDeElementos) {
                 const ladosObjeto = everywherePosition(element);
 
                 if (
@@ -396,6 +496,17 @@ function emForPx(number){
             }else {
                 fisica.move('Xcol')
             }
+        },
+
+        ativarFuncaoObjeto: function(){
+            const resultado = this.checkIntersection({ x: 0, y: 0 }, elementosFuncionais);
+            if(resultado[0] === true){
+                resultado.forEach((element, index)=>{
+                    if(index > 0){
+                        element.funcao();
+                    }
+                });
+            }
         }
     }
 
@@ -424,16 +535,23 @@ onLoad.forEach((element)=>{
 
 
 function gameLoop() {
-    fisica.addGravity()
-    atualizar.update();
-    
-    gerenciaColisao.chekingCollison()
+    if (!jogoRodando) {
+        animationFrameId = null;
+        return;
+    }
 
-    animationFrameId = requestAnimationFrame(gameLoop);
+    fisica.addGravity();
+    atualizar.update();
+
+    gerenciaColisao.chekingCollison();
+
+    gerenciaColisao.ativarFuncaoObjeto();
+
+    if (jogoRodando) {
+        animationFrameId = requestAnimationFrame(gameLoop);
+    }
 }
 
-
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
    //..................////...................////................////....................////...............//
@@ -472,8 +590,18 @@ function gameLoop() {
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/* elementosFuncionais.forEach((element)=>{
+elementosFuncionais.forEach((element)=>{
     const newElement = document.createElement('div');
+    
+    newElement.style.width = element.tamanho.width + 'em'
+    newElement.style.height = element.tamanho.height + 'em'
+    newElement.style.position = 'absolute'
+    newElement.style.bottom = element.position.y + 'em'
+    newElement.style.left = element.position.x + 'em'
+    newElement.style.backgroundImage = `url(${element.src})`
+    newElement.style.backgroundSize = '100% 100%'
+    newElement.style.backgroundRepeat = 'no-repeat'
 
-}) */
+    document.querySelector('#canvas').appendChild(newElement)
+})
 acoesInterface.startGame()

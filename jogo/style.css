@@ -1,7 +1,11 @@
 *{
     user-select: none;
 }
-
+body{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 #canvas{
     position: fixed;
     top: 0;
@@ -9,9 +13,13 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: blue;
+    background-color: rgb(12, 12, 100);
 }
 .menu{
+    width: 80%;
+    height: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
     flex-direction: column;
     align-items: center;
     background-color: rgba(250, 200, 20, 0.865);
@@ -19,10 +27,10 @@
     font-weight: 900;
     text-transform: uppercase;
     text-shadow: 1px 1px 10px black;
+    border-radius: 0.5em;
 }
 .menu div{
     width: 90%;
-    
     background-color: rgb(123, 211, 211);
     border: 1px solid black;
     text-align: center;
@@ -41,7 +49,7 @@
 }
 .menu .fechar{
     position: absolute;
-    bottom: 1em;
+    bottom: 0.5em;
     right: 1em;
     background-color: red;
     color: aliceblue;
@@ -57,4 +65,26 @@
     background-color: rgb(63, 80, 231);
     color: rgb(240, 236, 8);
     text-shadow: none;
+}
+
+#fases{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    min-height: 70%;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.865);
+}
+
+.menu #fases .fase{
+    max-width: 30%;
+    min-width: 30%;
+    margin: 1em;
+    min-height: 30%;
+}
+
+::-webkit-scrollbar{
+    display: none;
+    width: 0em;
 }

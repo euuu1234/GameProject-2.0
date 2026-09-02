@@ -69,13 +69,7 @@ export function configuracoes(){
 
     const menuConfig = document.createElement('main');
     {
-        menuConfig.style.width = '80%';
-        menuConfig.style.height = '80%';
-
         menuConfig.style.position = 'fixed';
-
-        menuConfig.style.marginRight = '10%';
-        menuConfig.style.marginLeft = '10%';
 
         menuConfig.style.display = 'none';
         menuConfig.style.border = '1px solid black';
