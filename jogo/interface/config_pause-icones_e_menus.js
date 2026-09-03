@@ -13,7 +13,7 @@ export function configuracoes(){
                 width: 3,
                 height: 3
             },
-            src: './Assets/img-ico/iconeEngrenagem.png',
+            src: '../Assets/img-ico/iconeEngrenagem.png',
         },
         {
             nome: pause,
@@ -25,7 +25,7 @@ export function configuracoes(){
                 width: 2,
                 height: 2.5
             },
-            src: './Assets/img-ico/pause_ico.png'
+            src: '../Assets/img-ico/pause_ico.png'
         }
     ];
 
@@ -96,12 +96,12 @@ export function configuracoes(){
         implantar(menuPause)
     };
     async function insercaoConfig() {
-        let resposta = await fetch("./interface/config.html")
+        let resposta = await fetch("../interface/config.html")
         let htmlMenuConfig = await resposta.text();
 
         menuConfig.innerHTML = htmlMenuConfig;
 
-        resposta = await fetch("./interface/pause.html")
+        resposta = await fetch("../interface/pause.html")
         htmlMenuConfig = await resposta.text();
 
         menuPause.innerHTML = htmlMenuConfig;
