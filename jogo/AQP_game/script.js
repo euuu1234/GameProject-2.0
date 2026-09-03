@@ -5,11 +5,8 @@ const fase = "../fases/fase"+parseInt(urlParams.get('fase'))+".js";
 
 const moduloFase = await import(`${fase}`);
 
-const {configFase, elementosDoJogo, player} = moduloFase;
+const {configFase, elementosDoJogo, player, emForPx, elementosFuncionais} = moduloFase;
 
-const cor1 = 'rgb(0, 150, 20)';
-const cor2 = 'white';
-const cor4 = 'red';
 const corFimTela = 'black';
 let btnRight = false;
 let btnLeft = false;
@@ -20,82 +17,7 @@ let jogoRodando = false;
 
 
 
-elementosDoJogo.push({
-
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        
-        position: {
-            x: 0,
-            y: 0,
-        },
-        tamanho: {
-            width: emForPx(window.screen.width),
-            height: 3,
-        },
-        color: cor1,
-        element: null,
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-        //transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//transferir para fase1.js//
-    },
+elementosDoJogo.push(
     {
         position: {
             x: -2.99,
@@ -107,41 +29,8 @@ elementosDoJogo.push({
         },
         color: corFimTela,
         element: null,
-    });
-
-const elementosFuncionais = [
-    {
-        position: {
-            x: 1,
-            y: 17
-        },
-        tamanho: {
-            width: 5,
-            height: 7
-        },
-        src: '../Assets/img-elementos_animados/portal.png',
-        funcao: function() {
-            acoesInterface.stopGame();
-
-            const menuFaseVencida = document.createElement('main');
-            menuFaseVencida.style.backgroundColor = 'rgba(250, 200, 20, 0.865)';
-            menuFaseVencida.classList.add('menu');
-            menuFaseVencida.style.display = 'flex';
-            menuFaseVencida.style.position = 'fixed';
-
-            async function fetchMenuFaseVencida() {
-                const response = await fetch('../interface/menu_fase-vencida.html');
-                const html = await response.text();
-
-                menuFaseVencida.innerHTML = html;
-            }
-
-            fetchMenuFaseVencida();
-            document.body.appendChild(menuFaseVencida);
-        },
-        animation: null,
     }
-]
+);
 
 player.fisica.velYMax = configFase.tamanhoMinimo;
 
@@ -154,11 +43,28 @@ function everywherePosition(element) {
     };
 }
 
-//converter do px
-function emForPx(number){
-    return (number / configFase.proporcao)
-}
+//funções de objetos funcionais
+const elementsFunction = {
+    conclusaoFase: function(){
+        acoesInterface.stopGame();
 
+        const menuFaseVencida = document.createElement('main');
+        menuFaseVencida.style.backgroundColor = 'rgba(250, 200, 20, 0.865)';
+        menuFaseVencida.classList.add('menu');
+        menuFaseVencida.style.display = 'flex';
+        menuFaseVencida.style.position = 'fixed';
+
+        async function fetchMenuFaseVencida() {
+            const response = await fetch('../interface/menu_fase-vencida.html');
+            const html = await response.text();
+
+            menuFaseVencida.innerHTML = html;
+        }
+
+        fetchMenuFaseVencida();
+        document.body.appendChild(menuFaseVencida);
+    }
+}
 
 //----------------------------------------------------criação de metodos----------------------------------------//
 
@@ -336,6 +242,27 @@ function emForPx(number){
                         case 'ArrowDown':
                             btnDown = true;
                             break;
+                        case 'Escape':
+                            if(
+                                !document.querySelector('#fases') &&
+                                document.querySelector('#volume').closest('.menu').style.display === 'none'
+                            ){
+                                const menuPause = document.querySelector('.menu-pause');
+                                if(menuPause.style.display === 'flex'){
+                                    menuPause.style.display = 'none';
+                                    document.querySelectorAll('.parador').forEach((element)=>{
+                                        element.style.display = 'flex';
+                                    })
+                                    acoesInterface.startGame();
+                                }else{ 
+                                    menuPause.style.display = 'flex';
+                                    document.querySelectorAll('.parador').forEach((element)=>{
+                                        element.style.display = 'none';
+                                    })
+                                    acoesInterface.stopGame();
+                                }
+                            }
+                            break;
                     }
                 });
 
@@ -445,8 +372,11 @@ function emForPx(number){
         ativarFuncaoObjeto: function(){
             const resultado = this.checkIntersection({ x: 0, y: 0 }, elementosFuncionais);
             if(resultado[0] === true){
-                resultado.forEach((element, index)=>{
-                    if(index > 0){
+                resultado.forEach((element)=>{
+                    if(element.nome === "portal"){
+                        if(element.funcao === null){
+                            element.funcao = elementsFunction.conclusaoFase
+                        };
                         element.funcao();
                     }
                 });

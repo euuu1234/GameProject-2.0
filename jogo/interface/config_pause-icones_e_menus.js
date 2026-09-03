@@ -91,7 +91,7 @@ export function configuracoes(){
         menuPause.style.display = 'none';
         menuPause.style.border = '1px solid black';
 
-        menuPause.classList.add('menu')
+        menuPause.classList.add('menu', 'menu-pause')
 
         implantar(menuPause)
     };
