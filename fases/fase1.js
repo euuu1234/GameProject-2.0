@@ -1,3 +1,5 @@
+import { portal } from "../objetos.js";
+
 const cor1 = 'rgb(0, 150, 20)';
 const cor2 = 'white';
 const cor4 = 'red';
@@ -23,14 +25,15 @@ const player = {
 const configFase = {
     width: 800,
     height: 600,
-    proporcao: 15,
     gravity: 0.2,
+    larguraFase: 75,
     tamanhoMinimo: player.tamanho.height * 0.5,
     positionInitial: {
         x: player.position.x,
         y: player.position.y
     }
 };
+configFase.proporcao = window.screen.width/configFase.larguraFase
 const elementosDoJogo = [
     {
         position: {
@@ -142,20 +145,8 @@ const elementosDoJogo = [
     },
 ];
 const elementosFuncionais = [
-    {
-        position: {
-            x: 1,
-            y: 17
-        },
-        tamanho: {
-            width: 5,
-            height: 7
-        },
-        src: '../Assets/img-elementos_animados/portal.png',
-        nome: 'portal',
-        funcao: null,
-        animation: null,
-    }
+    portal,
+    
 ]
 
 

@@ -80,13 +80,7 @@ export function configuracoes(){
     };
     const menuPause = document.createElement('main');
     {
-        menuPause.style.width = '80%';
-        menuPause.style.height = '80%';
-
-        menuPause.style.position = 'fixed';
-
-        menuPause.style.marginRight = '10%';
-        menuPause.style.marginLeft = '10%';
+        menuPause.style.position = 'fixed'; 
 
         menuPause.style.display = 'none';
         menuPause.style.border = '1px solid black';
