@@ -36,7 +36,7 @@ body{
     text-align: center;
     margin: 1%;
     box-shadow: 2px 2px 10px rgb(252, 3, 3);
-    padding: 2em;
+    padding: 1em;
     border-radius: 1em;
 }
 .item_menu_vertical{
@@ -73,11 +73,12 @@ body{
 #fases{
     display: flex;
     align-items: center;
-    width: 90%;
+    width: 93%;
     min-height: 70%;
     flex-wrap: wrap;
     overflow-y: auto;
-    background-color: rgba(0, 0, 0, 0.865);
+    background-color: rgba(110, 110, 110, 0.404);
+    border-radius: 0.5em;
 }
 
 .menu #fases .fase{

@@ -7,8 +7,8 @@ const cor3 = 'rgb(150,3,70)';
 
 const player = {
     position:{
-        x: 1,
-        y: 3,
+        x: 20,
+        y: 30,
     },
     tamanho:{
         width: 2,
@@ -20,13 +20,13 @@ const player = {
     },
     speed: 0.5,
     element: null,
-    jump: 2,
+    jump: 1.2,
 };
 const configFase = {
     width: 800,
     height: 600,
     gravity: 0.2,
-    larguraFase: 75,
+    larguraFase: 150,
     tamanhoMinimo: player.tamanho.height * 0.5,
     positionInitial: {
         x: player.position.x,
@@ -37,11 +37,11 @@ configFase.proporcao = window.screen.width/configFase.larguraFase
 const elementosDoJogo = [
     {
         position: {
-            x: 0,
-            y: 0,
+            x: 17,
+            y: 27,
         },
         tamanho: {
-            width: emForPx(window.screen.width),
+            width: 5,
             height: 3,
         },
         color: cor1,
@@ -49,109 +49,59 @@ const elementosDoJogo = [
     },
     {
         position: {
-            x: 13,
-            y: 10,
-        },
-        tamanho: {
-            width: 5,
-            height: 15,
-        },
-        color: cor3,
-        element: null,
-    },
-    {
-        position: {
-            x: 58,
-            y: 20,
-        },
-        tamanho: {
-            width: 5,
-            height: 3,
-        },
-        color: cor3,
-        element: null,
-    },
-    {
-        position: {
-            x: 66,
-            y: 26,
-        },
-        tamanho: {
-            width: 5,
-            height: 3,
-        },
-        color: cor3,
-        element: null,
-    },
-    {
-        position: {
-            x: 49,
+            x: 27,
             y: 30,
         },
         tamanho: {
-            width: 11,
+            width: 5,
             height: 3,
         },
-        color: cor3,
+        color: cor1,
         element: null,
     },
     {
         position: {
-            x: 30,
-            y: 30,
+            x: 35,
+            y: 37.5,
         },
         tamanho: {
-            width: 11,
+            width: 5,
             height: 3,
         },
-        color: cor3,
+        color: cor1,
         element: null,
     },
     {
         position: {
-            x: 20,
-            y: 3,
-        },
-        tamanho: {
-            width: 50,
-            height: 5,
-        },
-        color: cor3,
-        element: null,
-    },
-    {
-        position: {
-            x: 0,
-            y: 14,
+            x: 48,
+            y: 25,
         },
         tamanho: {
             width: 50,
             height: 3,
         },
-        color: cor3,
+        color: cor1,
         element: null,
     },
     {
         position: {
-            x: 55,
-            y: 8,
+            x: 130,
+            y: 0,
         },
         tamanho: {
-            width: 5,
-            height: 3,
+            width: 20,
+            height: 14,
         },
-        color: cor3,
+        color: cor1,
         element: null,
     },
 ];
 const elementosFuncionais = [
     portal,
-    
 ]
 
-elementosFuncionais[0].position.x = 1;
-elementosFuncionais[0].position.y = 17;
-
+elementosFuncionais[0].position.x = 144;
+elementosFuncionais[0].position.y = 14;
 
 
 export function emForPx(number){

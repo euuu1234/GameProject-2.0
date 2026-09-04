@@ -83,7 +83,6 @@ export function configuracoes(){
         menuPause.style.position = 'fixed'; 
 
         menuPause.style.display = 'none';
-        menuPause.style.border = '1px solid black';
 
         menuPause.classList.add('menu', 'menu-pause')
 

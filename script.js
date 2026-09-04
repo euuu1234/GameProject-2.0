@@ -30,7 +30,5 @@ document.addEventListener("click", function(event) {
 
     } else if(event.target.closest(".fechar")) {
         document.querySelector('main').remove()
-    }else if(event.target.closest("#fase_1")) {
-        window.location.replace("./AQP_game/?fase=1");
     }
 });

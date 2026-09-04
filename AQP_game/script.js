@@ -49,7 +49,6 @@ const elementsFunction = {
         acoesInterface.stopGame();
 
         const menuFaseVencida = document.createElement('main');
-        menuFaseVencida.style.backgroundColor = 'rgba(250, 200, 20, 0.865)';
         menuFaseVencida.classList.add('menu');
         menuFaseVencida.style.display = 'flex';
         menuFaseVencida.style.position = 'fixed';

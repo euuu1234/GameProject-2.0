@@ -1,7 +1,7 @@
 const portal = {
     position: {
-        x: 1,
-        y: 17
+        x: null,
+        y: null
     },
     tamanho: {
         width: 5,
