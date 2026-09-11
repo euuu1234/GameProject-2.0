@@ -6,24 +6,24 @@ export function configuracoes(){
         {
             nome: config,
             position: {
-                x: 2,
-                y: 2
+                x: 20,
+                y: 18
             },
             tamanho: {
-                width: 3,
-                height: 3
+                width: 30,
+                height: 30
             },
             src: '../Assets/img-ico/iconeEngrenagem.png',
         },
         {
             nome: pause,
             position:{
-                x: 7,
-                y: 2
+                x: 70,
+                y: 20
             },
             tamanho: {
-                width: 2,
-                height: 2.5
+                width: 20,
+                height: 25
             },
             src: '../Assets/img-ico/pause_ico.png'
         }
@@ -33,11 +33,11 @@ export function configuracoes(){
         element.nome.src = element.src;
         element.nome.style.position = 'absolute';
 
-        element.nome.style.width = element.tamanho.width + 'em';
-        element.nome.style.height = element.tamanho.height + 'em';
+        element.nome.style.width = element.tamanho.width + 'px';
+        element.nome.style.height = element.tamanho.height + 'px';
 
-        element.nome.style.top = element.position.y + 'em';
-        element.nome.style.right = element.position.x + 'em';
+        element.nome.style.top = element.position.y + 'px';
+        element.nome.style.right = element.position.x + 'px';
 
         element.nome.classList.add('parador')
 

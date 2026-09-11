@@ -14,8 +14,13 @@ let btnUp = false;
 let btnDown = false;
 let animationFrameId = null;
 let jogoRodando = false;
+let btnRun = false;
+let jump = false;
+let velXTrava = false;
 
 
+player.speedXInicial = player.speedX;
+player.speedYInicial = player.speedY;
 
 elementosDoJogo.push(
     {
@@ -32,7 +37,6 @@ elementosDoJogo.push(
     }
 );
 
-player.fisica.velYMax = configFase.tamanhoMinimo;
 
 function everywherePosition(element) {
     return {
@@ -71,35 +75,73 @@ const elementsFunction = {
         jump:
             function() {
                 const somador = {y: -1/configFase.proporcao, x: 0}
-                if(gerenciaColisao.checkIntersection(somador)[0] === true){
-                    player.fisica.velocityY = player.jump
+                if(
+                    gerenciaColisao.checkIntersection(somador)[0] === true &&
+                    !jump
+                ){
+                    player.fisica.velocityY = player.jump;
+                    if(btnRight){
+                        player.fisica.velocityX = player.speedX;
+                    }
+                    if(btnLeft)player.fisica.velocityX = -player.speedX
+                    jump = true;
+                    velXTrava = true;
+                }else{
+                    if(gerenciaColisao.checkIntersection(somador)[0] === true){
+                        velXTrava = false;
+                        jump = false;
+                    }
                 }
             },
         right:
             function() {
-                player.fisica.velocityX = player.speed;
+                let somador
+                if(
+                    player.fisica.velocityX < player.speedX &&
+                    !velXTrava
+                ){
+                    somador = 1/configFase.proporcao;
+                }else somador = 0;
+                player.fisica.velocityX += somador;
             },
         left:
             function() {
-                player.fisica.velocityX = -player.speed;
+                let somador
+                if(
+                    player.fisica.velocityX > (-player.speedX) &&
+                    !velXTrava
+                ){
+                    somador = 1/configFase.proporcao;
+                }else somador = 0;
+                player.fisica.velocityX -= somador;
             },
+        run:
+            function(){
+                if(player.speedXInicial >= player.speedX){player.speedX += 0.2}
+            },
+        noRun:
+            function(){
+                if(player.speedXInicial < player.speedX){player.speedX = player.speedXInicial;}
+            }
         
     }
 
     const fisica = {
         gravity:
             function() {
-                player.fisica.velocityY -= player.speed * configFase.gravity
+                player.fisica.velocityY -= player.speedY * configFase.gravity
             },
         addGravity: 
             function(){
                 if(
-                    player.fisica.velocityY < player.fisica.velYMax &&
-                    player.fisica.velocityY > (-player.fisica.velYMax)
-                )fisica.gravity();
+                    player.fisica.velocityY < configFase.velMaxY &&
+                    player.fisica.velocityY > (-configFase.velMaxY)
+                )fisica.gravity();else 
+                if(player.fisica.velocityY > 0)player.fisica.velocityY = configFase.velMaxY;else
+                if(player.fisica.velocityY < 0)player.fisica.velocityY = (-configFase.velMaxY)
             },
         move:
-            function(eixo) {
+            function(eixo, objeto = null) {
                 if(eixo === 'y'){
                     player.position.y += player.fisica.velocityY;
                 }else if(
@@ -109,15 +151,38 @@ const elementsFunction = {
                 }else if(
                     eixo === 'Ycol' 
                 ){
-                    player.fisica.velocityY = player.fisica.velocityY > 0 ?
-                    -1/configFase.proporcao :
-                    1/configFase.proporcao
+                    if(
+                        player.fisica.velocityY > 0
+                    ){
+                        if(objeto.length <= 2){
+                            player.position.y = objeto[1].position.y - player.tamanho.height
+                        }//...
+                    }else if(
+                        player.fisica.velocityY < 0
+                    ){
+                        if(objeto.length <= 2){
+                            player.position.y = objeto[1].position.y + objeto[1].tamanho.height
+                        }
+                    }
+                    player.fisica.velocityY = 0
                 }else if(
                     eixo === 'Xcol'
                 ){
-                    player.fisica.velocityX = player.fisica.velocityX > 0 ?
-                    -1/configFase.proporcao :
-                    1/configFase.proporcao
+                    
+                    if(
+                        player.fisica.velocityX > 0
+                    ){
+                        if(objeto.length <= 2){
+                            player.position.x = objeto[1].position.x - player.tamanho.width
+                        }//...
+                    }else if(
+                        player.fisica.velocityX < 0
+                    ){
+                        if(objeto.length <= 2){
+                            player.position.x = objeto[1].position.x + objeto[1].tamanho.width
+                        }
+                    }
+                    player.fisica.velocityX = 0
                 }
 
                 atualizar.updatePlayerPosition();
@@ -126,14 +191,16 @@ const elementsFunction = {
     }
 
     const atualizar = {
-        update://preciso melhorar isso, junto as formas como a velocidade é modificada
+        update:
             function() {
                 if(btnRight) acoesJogo.right(); else
                 if(btnLeft) acoesJogo.left(); else {
-                    player.fisica.velocityX = 0;
+                    if(!velXTrava)player.fisica.velocityX = 0;
                 }
+                if(btnRun) acoesJogo.run();
+                if(!btnRun) acoesJogo.noRun()
 
-                if(btnUp) acoesJogo.jump();
+                if(jump || btnUp) acoesJogo.jump();
             },
         updatePlayerPosition:
             function() {
@@ -192,22 +259,17 @@ const elementsFunction = {
         },
         function() {
             elementosDoJogo.forEach(element => {
-                if(
-                    element.tamanho.width > configFase.tamanhoMinimo &&
-                    element.tamanho.height > configFase.tamanhoMinimo
-                ){
-                    const div = document.createElement('div');
-                    div.style.width = element.tamanho.width + "em"
-                    div.style.height = element.tamanho.height + "em"
-                    div.style.background = element.color
-                    div.style.position = 'fixed'
-                    div.style.bottom = element.position.y + "em"
-                    div.style.left = element.position.x + "em"
-                    
+                const div = document.createElement('div');
+                div.style.width = element.tamanho.width + "em"
+                div.style.height = element.tamanho.height + "em"
+                div.style.background = element.color
+                div.style.position = 'fixed'
+                div.style.bottom = element.position.y + "em"
+                div.style.left = element.position.x + "em"
+                
 
-                    element.element = div
-                    document.querySelector('#canvas').appendChild(div)
-                }
+                element.element = div
+                document.querySelector('#canvas').appendChild(div)
             });
         },
         function() {
@@ -240,6 +302,20 @@ const elementsFunction = {
                             break;
                         case 'ArrowDown':
                             btnDown = true;
+                            break;
+                        case 'Shift':
+                            btnRun = true;
+                            break;
+                        case 'P':
+                            (()=>{
+                                console.log('executou')
+                                document.addEventListener("mousemove", (event)=>{
+                                    const x = event.clientX
+                                    const y = event.clientY
+                                    player.position.x = emForPx(x)
+                                    player.position.y = emForPx(window.screen.height-y)
+                                })
+                            })();
                             break;
                         case 'Escape':
                             if(
@@ -278,6 +354,9 @@ const elementsFunction = {
                             break;
                         case 'ArrowDown':
                             btnDown = false;
+                            break;
+                        case 'Shift':
+                            btnRun = false;
                             break;
                     }
                 });
@@ -356,7 +435,7 @@ const elementsFunction = {
             ){
                 fisica.move('y')
             }else {
-                fisica.move('Ycol')
+                fisica.move('Ycol', checagemY)
             }
 
             if(
@@ -364,7 +443,7 @@ const elementsFunction = {
             ){
                 fisica.move('x')
             }else {
-                fisica.move('Xcol')
+                fisica.move('Xcol', checagemX)
             }
         },
 

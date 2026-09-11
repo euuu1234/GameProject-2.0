@@ -21,19 +21,19 @@ nav{
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 1em;
+    border-radius: 5px;
     overflow-y: auto;
 }
 nav .opcao_lob{
     width: 90%;
     min-height: 10%;
-    padding: 1em;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    padding: 29px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     background-color: #f8000085;
     text-align: center;
     text-transform: uppercase;
-    font-size: 1.5em;
+    font-size: 15px;
     font-weight: 900;
     color: #fff;
 }
@@ -61,22 +61,22 @@ nav .opcao_lob:hover{
     flex-direction: column;
 }
 #menu_container h1{
-    font-size: 5em;
+    font-size: 40px;
 }
 #menu_container button{
-    min-width: 8em;
-    min-height: 2em;
-    font-size: 1em;
+    min-width: 40px;
+    min-height: 10px;
+    font-size: 20px;
     color: aliceblue;
     font-weight: 800;
-    padding: 1em;
+    padding: 10px;
     text-transform: uppercase;
     background-color: #f80000;
     border: none;
     position: absolute;
-    right: 2em;
-    bottom: 2em;
-    border-radius: 0.5em;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 2.5px;
 }
 #menu_container button:hover{
     scale: 1.2;
@@ -88,18 +88,18 @@ nav .opcao_lob:hover{
 .item_menu_vertical{
     width: 90%;
     min-height: 10%;
-    padding: 1em;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    padding: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     background-color: #f80000d5;
     text-align: left;
     text-transform: uppercase;
-    font-size: 1.5em;
+    font-size: 20px;
     font-weight: 900;
     color: #fff;
     display: flex;
     flex-direction: row;
-    border-radius: 0.5em;
+    border-radius: 2.5px;
 }
 
 .item_menu_vertical input{
@@ -109,15 +109,15 @@ nav .opcao_lob:hover{
 .fase{
     width: 90%;
     min-height: 10%;
-    padding: 1em;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     background-color: #f80000d5;
     text-align: center;
     text-transform: uppercase;
-    font-size: 1.5em;
+    font-size: 30px;
     font-weight: 900;
-    border-radius: 0.5em;
+    border-radius: 2.5px;
 }
 
 .fase:hover{
