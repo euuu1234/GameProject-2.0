@@ -69,14 +69,21 @@ const elementsFunction = {
     }
 }
 
+function noChao(){
+    const somador = {y: -1/configFase.proporcao, x: 0}
+    if(
+        gerenciaColisao.checkIntersection(somador)[0] === true
+    )return true; else return false;
+}
+
 //----------------------------------------------------criação de metodos----------------------------------------//
 
     const acoesJogo = {
         jump:
             function() {
-                const somador = {y: -1/configFase.proporcao, x: 0}
+                const verificar = noChao();
                 if(
-                    gerenciaColisao.checkIntersection(somador)[0] === true &&
+                    verificar &&
                     !jump
                 ){
                     player.fisica.velocityY = player.jump;
@@ -87,7 +94,7 @@ const elementsFunction = {
                     jump = true;
                     velXTrava = true;
                 }else{
-                    if(gerenciaColisao.checkIntersection(somador)[0] === true){
+                    if(verificar){
                         velXTrava = false;
                         jump = false;
                     }

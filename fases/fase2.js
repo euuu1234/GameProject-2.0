@@ -99,7 +99,7 @@ const elementosDoJogo = [
     },
     {
         position: {
-            x: 107.5,
+            x: 106.5,
             y: 30,
         },
         tamanho: {
