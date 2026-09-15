@@ -21,7 +21,7 @@ body{
     flex-direction: column;
     align-items: center;
     background-color: rgba(14, 11, 0, 0.842);
-    color:rgb(2, 31, 73);
+    color:rgb(0, 99, 238);
     font-weight: 900;
     text-transform: uppercase;
     text-shadow: 2px 2px 6px rgb(255, 0, 0);
@@ -50,7 +50,7 @@ body{
     margin-left: auto;
 }
 .menu .fechar{
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     right: 25px;
     background-color: red;
@@ -91,4 +91,59 @@ body{
 ::-webkit-scrollbar{
     display: none;
     width: 0px;
+}
+
+.menu#menu-config{
+    overflow-y: auto;
+}
+
+.menu box{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    align-items: center;
+    background-color: rgba(0, 255, 255, 0.226);
+    padding-block: 100px;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+.menu box h2{
+    font-size: 50px;
+    text-shadow: 2px 2px 30px rgb(100, 0, 67);
+    color: blue;
+    margin-bottom: 100px;
+}
+
+.menu .box_form{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    box-shadow: none;
+    border: blue 6px solid;
+}
+
+.menu .box_form p{
+    margin-right: auto;
+    color: rgb(2, 19, 116);
+    text-shadow: none;
+}
+
+.menu box .key_box:hover{
+    scale: 1.2;
+    cursor: pointer;
+}
+
+.menu box .key_box{
+    width: 100px;
+    height: 100px;
+    box-shadow: none;
+    border: 3px solid blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+p.text_key{
+    width: 100%;
 }

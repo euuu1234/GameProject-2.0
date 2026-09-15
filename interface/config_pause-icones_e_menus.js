@@ -51,6 +51,8 @@ export function configuracoes(){
             if(element.nome === config){
                 faceInterna.menuConfig.style.display = 'flex';
 
+                faceInterna.menuConfig.id = "menu-config"
+
                 element.nome.style.display = 'none';
 
                 pause.style.display = 'none'

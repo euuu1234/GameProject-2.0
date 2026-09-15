@@ -121,18 +121,6 @@ const elementosDoJogo = [
         color: cor1,
         element: null,
     },
-    {
-        position: {
-            x: 67,
-            y: 15,
-        },
-        tamanho: {
-            width: 33,
-            height: 30,
-        },
-        color: cor1,
-        element: null,
-    },
 ];
 const elementosFuncionais = [
     portal,

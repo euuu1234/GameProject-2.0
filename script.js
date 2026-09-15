@@ -1,7 +1,9 @@
 document.addEventListener("click", function(event) {
     if (event.target.closest("#configuracoes")) {
         const configuracoes = document.createElement("main");
-        configuracoes.id = "menu_container";
+        configuracoes.classList.add('menu');
+        
+        configuracoes.id = "menu-config";
 
         fetch("./interface/config.html")
             .then(response => response.text())
@@ -15,7 +17,8 @@ document.addEventListener("click", function(event) {
         
     }else if(event.target.closest("#escolher_fase")) {
         const menu_fase = document.createElement("main");
-        menu_fase.id = "menu_container";
+        menu_fase.id = "menu-config";
+        menu_fase.classList.add('menu')
 
         fetch("./interface/menu_fase-vencida.html")
             .then(response => response.text())
@@ -32,3 +35,18 @@ document.addEventListener("click", function(event) {
         document.querySelector('main').remove()
     }
 });
+
+let dados = JSON.parse(localStorage.getItem('saves'))
+
+if(dados === null || dados === undefined){
+    dados = {
+        comandsKeys: {
+            direita: 'd',
+            esquerda: 'a',
+            pular: 'w',
+            correr: 'shift'
+        }
+    };
+
+    localStorage.setItem('saves', JSON.stringify(dados))
+}

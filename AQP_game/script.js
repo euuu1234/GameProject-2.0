@@ -19,6 +19,14 @@ let jump = false;
 let velXTrava = false;
 
 
+const comandsKeys = {
+    direita: null,
+    esquerda: null,
+    pular: null,
+    correr: null
+}
+
+
 player.speedXInicial = player.speedX;
 player.speedYInicial = player.speedY;
 
@@ -254,6 +262,15 @@ function noChao(){
             function() {
                 acoesInterface.resetGame();
                 acoesInterface.startGame();
+            },
+        carregarDados:
+            function(){
+                const dados = JSON.parse(localStorage.getItem('saves'));
+                
+                comandsKeys.direita = dados.comandsKeys.direita;
+                comandsKeys.esquerda = dados.comandsKeys.esquerda;
+                comandsKeys.pular = dados.comandsKeys.pular;
+                comandsKeys.correr = dados.comandsKeys.correr;
             }
     }
 
@@ -297,20 +314,20 @@ function noChao(){
         },
         function() {
                 window.addEventListener('keydown', (event) => {
-                    switch (event.key) {
-                        case 'ArrowRight':
+                    switch (event.key.toLowerCase()) {
+                        case comandsKeys.direita:
                             btnRight = true;
                             break;
-                        case 'ArrowLeft':
+                        case comandsKeys.esquerda:
                             btnLeft = true;
                             break;
-                        case 'ArrowUp':
+                        case comandsKeys.pular:
                             btnUp = true;
                             break;
                         case 'ArrowDown':
                             btnDown = true;
                             break;
-                        case 'Shift':
+                        case comandsKeys.correr:
                             btnRun = true;
                             break;
                         case 'P':
@@ -325,9 +342,10 @@ function noChao(){
                             })();
                             break;
                         case 'Escape':
+                            const menuConfig = document.querySelector("#menu-config")
                             if(
                                 !document.querySelector('#fases') &&
-                                document.querySelector('#volume').closest('.menu').style.display === 'none'
+                                menuConfig.style.display === 'none'
                             ){
                                 const menuPause = document.querySelector('.menu-pause');
                                 if(menuPause.style.display === 'flex'){
@@ -343,26 +361,34 @@ function noChao(){
                                     })
                                     acoesInterface.stopGame();
                                 }
+                            }else if(
+                                menuConfig.style.display === 'flex'
+                            ){
+                                menuConfig.style.display = 'none';
+                                document.querySelectorAll('.parador').forEach((element)=>{
+                                    element.style.display = 'flex';
+                                });
+                                acoesInterface.startGame();
                             }
                             break;
                     }
                 });
 
                 window.addEventListener('keyup', (event) => {
-                    switch (event.key) {
-                        case 'ArrowRight':
+                    switch (event.key.toLowerCase()) {
+                        case comandsKeys.direita:
                             btnRight = false;
                             break;
-                        case 'ArrowLeft':
+                        case comandsKeys.esquerda:
                             btnLeft = false;
                             break;
-                        case 'ArrowUp':
+                        case comandsKeys.pular:
                             btnUp = false;
                             break;
                         case 'ArrowDown':
                             btnDown = false;
                             break;
-                        case 'Shift':
+                        case comandsKeys.correr:
                             btnRun = false;
                             break;
                     }
@@ -382,7 +408,78 @@ function noChao(){
                         }
                     }
                 });
-            } 
+        },
+        function() {
+            acoesInterface.carregarDados();
+
+            const menu = document.querySelector('.menu');
+
+            const observarMudancas = new MutationObserver((mutationsList) => {
+                for (const mutation of mutationsList) {
+                    for (const node of mutation.addedNodes) {
+                        if (node.nodeType !== Node.ELEMENT_NODE) continue;
+
+                        if (node.id === 'config_box' || node.querySelector?.('#config_box')) {
+                            const opsComand = {
+                                direitaOp1 : document.querySelector('div#direita div#dop1'),
+                                esquerdaOp1 : document.querySelector('div#esquerda div#eop1'),
+                                pularOp1 : document.querySelector('div#pular div#pop1'),
+                                correrOp1 : document.querySelector('div#correr div#cop1')
+                            }
+
+                            opsComand.direitaOp1.innerHTML = '<p class="text_key">' + comandsKeys.direita + '</p>';
+                            opsComand.esquerdaOp1.innerHTML = '<p class="text_key">' + comandsKeys.esquerda + '</p>';
+                            opsComand.correrOp1.innerHTML = '<p class="text_key">' + comandsKeys.correr + '</p>';
+                            opsComand.pularOp1.innerHTML = '<p class="text_key">' + comandsKeys.pular + '</p>';
+
+                            document.querySelectorAll(".key_box").forEach((e)=>{
+                                e.addEventListener('click', ()=>{
+                                    e.style.backgroundColor = 'rgba(122, 133, 144, 0.31)'
+                                    e.style.border = 'rgb(255, 0, 0) solid 7px'
+                                    e.style.width = '100%';
+                                    e.style.height = '100%';
+                                    e.style.margin = '0';
+                                    e.style.position = 'fixed';
+                                    e.style.left = '0';
+                                    e.style.top = '0';
+                                    e.style.fontSize = '80px';
+                                    e.style.zIndex = '9999';
+
+                                    document.addEventListener('keydown', (evento)=>{
+                                        e.innerHTML = '<p class="text_key">' + evento.key + '</p>';
+                                        e.removeAttribute('style');
+                                        
+                                        let dados = JSON.parse(localStorage.getItem('saves'));
+
+                                        if(e.closest('#direita')){
+                                            dados.comandsKeys.direita = evento.key.toLowerCase()
+                                        }else
+                                        if(e.closest('#esquerda')){
+                                            dados.comandsKeys.esquerda = evento.key.toLowerCase()
+                                        }else
+                                        if(e.closest('#pular')){
+                                            dados.comandsKeys.pular = evento.key.toLowerCase()
+                                        }else
+                                        if(e.closest('#correr')){
+                                            dados.comandsKeys.correr = evento.key.toLowerCase()
+                                        }
+
+                                        localStorage.setItem('saves', JSON.stringify(dados))
+
+                                        acoesInterface.carregarDados()
+                                    }, {once: true})
+                                })
+                            })
+                        }
+                    }
+                }
+            });
+
+            observarMudancas.observe(menu, {
+                childList: true,
+                subtree: true
+            });
+        }
     ]
 
     const gerenciaColisao = {
@@ -486,68 +583,11 @@ const blocoFim = {
     color: corFimTela,
     element: null,
 }
-elementosDoJogo.push(blocoFim)
+elementosDoJogo.push(blocoFim);
 
 onLoad.forEach((element)=>{
     element()
 })
-
-
-function gameLoop() {
-    if (!jogoRodando) {
-        animationFrameId = null;
-        return;
-    }
-
-    fisica.addGravity();
-    atualizar.update();
-
-    gerenciaColisao.chekingCollison();
-
-    gerenciaColisao.ativarFuncaoObjeto();
-
-    if (jogoRodando) {
-        animationFrameId = requestAnimationFrame(gameLoop);
-    }
-}
-
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   //..................////...................////................////....................////...............//
-   //..................////...................////.................///....................////...............//
-   //..................////...................////.................///....................////...............//
-   //......      ......////......       ......////.....       ....../////////......///////////......///////////
-   //......      ......////......       ......////.....       ....../////////......///////////......///////////
-   //......      ......////......       ......////.....       .....//////////......///////////......///////////
-   //..................////...................////.................//////////......///////////......///////////
-   //..................////...................////................///////////......///////////...............//
-   //..................////...................////.....//......//////////////......///////////...............//
-   //......////////////////......///////......////.....///....../////////////......///////////...............//
-   //......////////////////......///////......////.....////......////////////......///////////......///////////
-   //......////////////////......///////......////...../////......///////////......///////////......///////////
-   //......////////////////......///////......////.....//////......//////////......///////////...............//
-   //......////////////////......///////......////.....///////....../////////......///////////...............//
-   //......////////////////......///////......////.....////////......////////......///////////...............//
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   //.....................///////////............................/////........//////....................../////
-   //......................./////////............................/////........//////....................../////
-   //........................////////............................/////........//////....................../////
-   //.......       ..........////////........            ......../////........//////.......////////////////////
-   //.......        ..........///////........            ......../////........//////.......////////////////////
-   //.......         ..........//////........            ......../////........//////....................../////
-   //.......         ..........//////........            ......../////........//////....................../////
-   //.......         ..........//////........            ......../////........//////....................../////
-   //.......         ..........//////........            ......../////......../////////////////////......./////
-   //.......         ..........//////........            ......../////......../////////////////////......./////
-   //.......        ..........///////........            ......../////......../////////////////////......./////
-   //.......       ..........////////........            ......../////......../////////////////////......./////
-   //......................//////////............................/////........//////....................../////
-   //....................////////////............................/////........//////....................../////
-   //.................../////////////............................/////........//////....................../////
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 elementosFuncionais.forEach((element)=>{
     const newElement = document.createElement('div');
@@ -563,4 +603,52 @@ elementosFuncionais.forEach((element)=>{
 
     document.querySelector('#canvas').appendChild(newElement)
 })
+
+function gameLoop() {
+    if (!jogoRodando) {
+        animationFrameId = null;
+        return;
+    }
+
+    fisica.addGravity();
+    atualizar.update();
+
+    gerenciaColisao.chekingCollison();
+
+    gerenciaColisao.ativarFuncaoObjeto();
+
+
+
+
+
+    //--------------------------------morte-----------------------------------//
+    //--------------------------------morte-----------------------------------//
+    //--------------------------------morte-----------------------------------//
+    //--------------------------------morte-----------------------------------//
+    
+    
+    
+    if(player.position.y <= 0){
+        acoesInterface.resetGame();
+    }
+    
+    
+    
+    //--------------------------------morte-----------------------------------//
+    //--------------------------------morte-----------------------------------//
+    //--------------------------------morte-----------------------------------//
+    //--------------------------------morte-----------------------------------//
+    
+    
+
+
+
+
+
+
+    if (jogoRodando) {
+        animationFrameId = requestAnimationFrame(gameLoop);
+    }
+}
+
 acoesInterface.startGame()
