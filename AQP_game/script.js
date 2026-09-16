@@ -330,7 +330,7 @@ function noChao(){
                         case comandsKeys.correr:
                             btnRun = true;
                             break;
-                        case 'P':
+                        case '=':
                             (()=>{
                                 console.log('executou')
                                 document.addEventListener("mousemove", (event)=>{
@@ -341,7 +341,7 @@ function noChao(){
                                 })
                             })();
                             break;
-                        case 'Escape':
+                        case 'escape':
                             const menuConfig = document.querySelector("#menu-config")
                             if(
                                 !document.querySelector('#fases') &&

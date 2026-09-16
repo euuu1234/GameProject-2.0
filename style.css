@@ -1,35 +1,15 @@
+*{
+    user-select: none;
+}
 body{
-    background-color: blue;
-    height: 100%;
-    width: 100%;
+    background-image: url('./Assets/img-lob/images.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100dvh;
+    width: 100dvw;
     color: white;
     font-size: 30px;
     align-items: center;
     overflow: hidden;
-}
-
-.menu{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    left: 0;
-    top: 0;
-    background-color: rgba(0, 0, 0, 0.644);
-    padding-inline: 30px;
-    display: flex;
-    flex-direction: column;
-}
-
-.menu *{
-    margin-block: 40px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.menu .fechar{
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    background-color: blueviolet;
+    margin: 0%;
 }

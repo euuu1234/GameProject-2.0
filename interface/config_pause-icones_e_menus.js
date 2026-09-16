@@ -51,8 +51,6 @@ export function configuracoes(){
             if(element.nome === config){
                 faceInterna.menuConfig.style.display = 'flex';
 
-                faceInterna.menuConfig.id = "menu-config"
-
                 element.nome.style.display = 'none';
 
                 pause.style.display = 'none'
@@ -76,7 +74,9 @@ export function configuracoes(){
         menuConfig.style.display = 'none';
         menuConfig.style.border = '1px solid black';
 
-        menuConfig.classList.add('menu')
+        menuConfig.classList.add('menu');
+
+        menuConfig.id = "menu-config";
 
         implantar(menuConfig)
     };
