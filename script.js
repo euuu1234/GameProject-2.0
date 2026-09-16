@@ -11,6 +11,7 @@ document.addEventListener("click", function(event) {
                 configuracoes.innerHTML = html;
                 document.body.appendChild(configuracoes);
                 dadosConfig();
+                initConfig();
             })
             .catch(error => {
                 console.error("Erro ao carregar o arquivo HTML:", error);
@@ -54,6 +55,7 @@ function dadosIniciais() {
 
         localStorage.setItem('saves', JSON.stringify(dados))
     }
+
 }
 
 function dadosConfig() {
@@ -72,63 +74,48 @@ function dadosConfig() {
 }
 
 function initConfig() {
-    const menu = document.querySelector('.menu');
+    const observarMudancas = (() => {
+        document.querySelectorAll(".key_box").forEach((e)=>{
+            e.addEventListener('click', ()=>{
+                e.style.backgroundColor = 'rgba(0, 0, 4, 0.65)'
+                e.style.width = '100%';
+                e.style.height = '100%';
+                e.style.margin = '0';
+                e.style.padding = '0';
+                e.style.position = 'fixed';
+                e.style.left = '0';
+                e.style.top = '0';
+                e.style.zIndex = '9999';
+                
 
-    const observarMudancas = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
-            for (const node of mutation.addedNodes) {
-                if (node.nodeType !== Node.ELEMENT_NODE) continue;
+                e.querySelector('p').style.fontSize = '200px'
 
-                if (node.id === 'config_box' || node.querySelector?.('#config_box')) {
+                document.addEventListener('keydown', (evento)=>{
+                    e.innerHTML = '<p class="text_key">' + evento.key + '</p>';
+                    e.removeAttribute('style');
 
+                    if(e.closest('#direita')){
+                        dados.comandsKeys.direita = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#esquerda')){
+                        dados.comandsKeys.esquerda = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#pular')){
+                        dados.comandsKeys.pular = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#correr')){
+                        dados.comandsKeys.correr = evento.key.toLowerCase()
+                    }
 
-                    document.querySelectorAll(".key_box").forEach((e)=>{
-                        e.addEventListener('click', ()=>{
-                            e.style.backgroundColor = 'rgba(122, 133, 144, 0.31)'
-                            e.style.border = 'rgb(255, 0, 0) solid 7px'
-                            e.style.width = '100%';
-                            e.style.height = '100%';
-                            e.style.margin = '0';
-                            e.style.position = 'fixed';
-                            e.style.left = '0';
-                            e.style.top = '0';
-                            e.style.fontSize = '80px';
-                            e.style.zIndex = '9999';
+                    localStorage.setItem('saves', JSON.stringify(dados))
 
-                            document.addEventListener('keydown', (evento)=>{
-                                e.innerHTML = '<p class="text_key">' + evento.key + '</p>';
-                                e.removeAttribute('style');
-                                
-                                let dados = JSON.parse(localStorage.getItem('saves'));
+                }, {once: true})
+            })
+        })
+    })
 
-                                if(e.closest('#direita')){
-                                    dados.comandsKeys.direita = evento.key.toLowerCase()
-                                }else
-                                if(e.closest('#esquerda')){
-                                    dados.comandsKeys.esquerda = evento.key.toLowerCase()
-                                }else
-                                if(e.closest('#pular')){
-                                    dados.comandsKeys.pular = evento.key.toLowerCase()
-                                }else
-                                if(e.closest('#correr')){
-                                    dados.comandsKeys.correr = evento.key.toLowerCase()
-                                }
-
-                                localStorage.setItem('saves', JSON.stringify(dados))
-
-                            }, {once: true})
-                        })
-                    })
-                }
-            }
-        }
-    });
-
-    observarMudancas.observe(menu, {
-        childList: true,
-        subtree: true
-    });
-
+    observarMudancas()
+    
     dadosConfig();
 }
 

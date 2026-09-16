@@ -434,16 +434,18 @@ function noChao(){
 
                             document.querySelectorAll(".key_box").forEach((e)=>{
                                 e.addEventListener('click', ()=>{
-                                    e.style.backgroundColor = 'rgba(122, 133, 144, 0.31)'
-                                    e.style.border = 'rgb(255, 0, 0) solid 7px'
+                                    
+                                    e.style.backgroundColor = 'rgba(0, 0, 4, 0.65)'
                                     e.style.width = '100%';
                                     e.style.height = '100%';
                                     e.style.margin = '0';
+                                    e.style.padding = '0';
                                     e.style.position = 'fixed';
                                     e.style.left = '0';
                                     e.style.top = '0';
-                                    e.style.fontSize = '80px';
                                     e.style.zIndex = '9999';
+
+                                    e.querySelector('p').style.fontSize = '200px'
 
                                     document.addEventListener('keydown', (evento)=>{
                                         e.innerHTML = '<p class="text_key">' + evento.key + '</p>';
