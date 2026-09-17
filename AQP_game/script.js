@@ -605,7 +605,6 @@ elementosFuncionais.forEach((element)=>{
 
     document.querySelector('#canvas').appendChild(newElement)
 })
-
 function gameLoop() {
     if (!jogoRodando) {
         animationFrameId = null;

@@ -1,4 +1,3 @@
-
 nav{
     display: flex;
     flex-direction: column;
@@ -146,6 +145,29 @@ box p{
     text-align: center;
     font-size: 20px;
     font-weight: 900;
+}
+
+/* MENU DE PAUSE */
+
+main.menu.menu-pause{
+    padding-inline: 0px;
+}
+
+.item_pause{
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.575);
+    margin-block: 10px;
+    width: 50%;
+}
+
+.item_pause.item_menu_vertical p{
+    margin-left: auto;
+}
+
+.item_pause:hover{
+    scale: 1.1;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.875);
 }
 
 /* MENU DE FASES */

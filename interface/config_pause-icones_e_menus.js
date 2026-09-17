@@ -103,6 +103,11 @@ export function configuracoes(){
 
         document.querySelectorAll('.fechador').forEach((element)=>{
             element.addEventListener('click', ()=>fechar())
+        });
+
+        menuPause.querySelector('#config_main').addEventListener('click', ()=>{
+            menuPause.style.display = 'none';
+            menuConfig.style.display = 'flex';
         })
     };
     insercaoConfig();
