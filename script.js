@@ -46,10 +46,10 @@ function dadosIniciais() {
     if(dados === null || dados === undefined){
         dados = {
             comandsKeys: {
-                direita: 'd',
-                esquerda: 'a',
-                pular: 'w',
-                correr: 'shift'
+                direita: ['d', 'ArrowRight'],
+                esquerda: ['a', 'ArrowLeft'],
+                pular: ['w', 'ArrowUp'],
+                correr: ['shift', 'Space']
             }
         };
 
@@ -64,13 +64,23 @@ function dadosConfig() {
         direitaOp1 : document.querySelector('div#direita div#dop1'),
         esquerdaOp1 : document.querySelector('div#esquerda div#eop1'),
         pularOp1 : document.querySelector('div#pular div#pop1'),
-        correrOp1 : document.querySelector('div#correr div#cop1')
+        correrOp1 : document.querySelector('div#correr div#cop1'),
+
+        direitaOp2 : document.querySelector('div#direita div#dop2'),
+        esquerdaOp2 : document.querySelector('div#esquerda div#eop2'),
+        pularOp2 : document.querySelector('div#pular div#pop2'),
+        correrOp2 : document.querySelector('div#correr div#cop2')
     }
 
-    opsComand.direitaOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.direita + '</p>';
-    opsComand.esquerdaOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.esquerda + '</p>';
-    opsComand.correrOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.correr + '</p>';
-    opsComand.pularOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.pular + '</p>';
+    opsComand.direitaOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.direita[0] + '</p>';
+    opsComand.esquerdaOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.esquerda[0] + '</p>';
+    opsComand.correrOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.correr[0] + '</p>';
+    opsComand.pularOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.pular[0] + '</p>';
+
+    opsComand.direitaOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.direita[1] + '</p>';
+    opsComand.esquerdaOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.esquerda[1] + '</p>';
+    opsComand.correrOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.correr[1] + '</p>';
+    opsComand.pularOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.pular[1] + '</p>';
 }
 
 function initConfig() {
@@ -94,17 +104,29 @@ function initConfig() {
                     e.innerHTML = '<p class="text_key">' + evento.key + '</p>';
                     e.removeAttribute('style');
 
-                    if(e.closest('#direita')){
-                        dados.comandsKeys.direita = evento.key.toLowerCase()
+                    if(e.closest('#dop1')){
+                        dados.comandsKeys.direita[0] = evento.key.toLowerCase()
                     }else
-                    if(e.closest('#esquerda')){
-                        dados.comandsKeys.esquerda = evento.key.toLowerCase()
+                    if(e.closest('#eop1')){
+                        dados.comandsKeys.esquerda[0] = evento.key.toLowerCase()
                     }else
-                    if(e.closest('#pular')){
-                        dados.comandsKeys.pular = evento.key.toLowerCase()
+                    if(e.closest('#pop1')){
+                        dados.comandsKeys.pular[0] = evento.key.toLowerCase()
                     }else
-                    if(e.closest('#correr')){
-                        dados.comandsKeys.correr = evento.key.toLowerCase()
+                    if(e.closest('#cop1')){
+                        dados.comandsKeys.correr[0] = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#dop2')){
+                        dados.comandsKeys.direita[1] = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#eop2')){
+                        dados.comandsKeys.esquerda[1] = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#pop2')){
+                        dados.comandsKeys.pular[1] = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#cop2')){
+                        dados.comandsKeys.correr[1] = evento.key.toLowerCase()
                     }
 
                     localStorage.setItem('saves', JSON.stringify(dados))

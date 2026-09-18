@@ -26,7 +26,7 @@ const player = {
 const configFase = {
     width: 800,
     height: 600,
-    gravity: 0.2,
+    gravity: 11,
     larguraFase: 150,
     velMaxY: player.tamanho.height,
     velMaxX: player.tamanho.width,

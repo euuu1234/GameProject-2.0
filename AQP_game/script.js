@@ -109,30 +109,40 @@ function noChao(){
                 }
             },
         right:
-            function() {
-                let somador
+            function(tempo) {
+                let somador;
+
                 if(
                     player.fisica.velocityX < player.speedX &&
                     !velXTrava
                 ){
-                    somador = 1/configFase.proporcao;
-                }else somador = 0;
-                player.fisica.velocityX += somador;
+                    somador = 100 / configFase.proporcao;
+                }else{
+                    somador = 0;
+                }
+
+                player.fisica.velocityX += somador * tempo;
             },
         left:
-            function() {
-                let somador
+            function(tempo) {
+                let somador;
+
                 if(
                     player.fisica.velocityX > (-player.speedX) &&
                     !velXTrava
                 ){
-                    somador = 1/configFase.proporcao;
-                }else somador = 0;
-                player.fisica.velocityX -= somador;
+                    somador = 100 / configFase.proporcao;
+                }else{
+                    somador = 0;
+                }
+
+                player.fisica.velocityX -= somador * tempo;
             },
         run:
-            function(){
-                if(player.speedXInicial >= player.speedX){player.speedX += 0.2}
+            function(tempo){
+                if(player.speedXInicial >= player.speedX){
+                    player.speedX += 10 * tempo;
+                }
             },
         noRun:
             function(){
@@ -143,17 +153,21 @@ function noChao(){
 
     const fisica = {
         gravity:
-            function() {
-                player.fisica.velocityY -= player.speedY * configFase.gravity
+            function(tempo) {
+                player.fisica.velocityY -= player.speedY * configFase.gravity * tempo;
             },
-        addGravity: 
-            function(){
+        addGravity:
+            function(tempo){
                 if(
                     player.fisica.velocityY < configFase.velMaxY &&
                     player.fisica.velocityY > (-configFase.velMaxY)
-                )fisica.gravity();else 
-                if(player.fisica.velocityY > 0)player.fisica.velocityY = configFase.velMaxY;else
-                if(player.fisica.velocityY < 0)player.fisica.velocityY = (-configFase.velMaxY)
+                ){
+                    fisica.gravity(tempo);
+                }else if(player.fisica.velocityY > 0){
+                    player.fisica.velocityY = configFase.velMaxY;
+                }else if(player.fisica.velocityY < 0){
+                    player.fisica.velocityY = (-configFase.velMaxY);
+                }
             },
         move:
             function(eixo, objeto = null) {
@@ -207,13 +221,17 @@ function noChao(){
 
     const atualizar = {
         update:
-            function() {
-                if(btnRight) acoesJogo.right(); else
-                if(btnLeft) acoesJogo.left(); else {
-                    if(!velXTrava)player.fisica.velocityX = 0;
+            function(tempo) {
+                if(btnRight) acoesJogo.right(tempo);
+                else if(btnLeft) acoesJogo.left(tempo);
+                else {
+                    if(!velXTrava){
+                        player.fisica.velocityX = 0;
+                    }
                 }
-                if(btnRun) acoesJogo.run();
-                if(!btnRun) acoesJogo.noRun()
+
+                if(btnRun) acoesJogo.run(tempo);
+                if(!btnRun) acoesJogo.noRun();
 
                 if(jump || btnUp) acoesJogo.jump();
             },
@@ -305,7 +323,7 @@ function noChao(){
             element.style.height = player.tamanho.height + "em";
 
             element.style.backgroundColor = 'yellow';
-            element.style.position = 'absolute';
+            element.style.position = 'fixed';
 
             element.style.zIndex = '9999';
 
@@ -315,19 +333,23 @@ function noChao(){
         function() {
                 window.addEventListener('keydown', (event) => {
                     switch (event.key.toLowerCase()) {
-                        case comandsKeys.direita:
+                        case comandsKeys.direita[0].toLowerCase():
+                        case comandsKeys.direita[1].toLowerCase():
                             btnRight = true;
                             break;
-                        case comandsKeys.esquerda:
+                        case comandsKeys.esquerda[0].toLowerCase():
+                        case comandsKeys.esquerda[1].toLowerCase():
                             btnLeft = true;
                             break;
-                        case comandsKeys.pular:
+                        case comandsKeys.pular[0].toLowerCase():
+                        case comandsKeys.pular[1].toLowerCase():
                             btnUp = true;
                             break;
                         case 'ArrowDown':
                             btnDown = true;
                             break;
-                        case comandsKeys.correr:
+                        case comandsKeys.correr[0].toLowerCase():
+                        case comandsKeys.correr[1].toLowerCase():
                             btnRun = true;
                             break;
                         case '=':
@@ -376,19 +398,23 @@ function noChao(){
 
                 window.addEventListener('keyup', (event) => {
                     switch (event.key.toLowerCase()) {
-                        case comandsKeys.direita:
+                        case comandsKeys.direita[0].toLowerCase():
+                        case comandsKeys.direita[1].toLowerCase():
                             btnRight = false;
                             break;
-                        case comandsKeys.esquerda:
+                        case comandsKeys.esquerda[0].toLowerCase():
+                        case comandsKeys.esquerda[1].toLowerCase():
                             btnLeft = false;
                             break;
-                        case comandsKeys.pular:
+                        case comandsKeys.pular[0].toLowerCase():
+                        case comandsKeys.pular[1].toLowerCase():
                             btnUp = false;
                             break;
                         case 'ArrowDown':
                             btnDown = false;
                             break;
-                        case comandsKeys.correr:
+                        case comandsKeys.correr[0].toLowerCase():
+                        case comandsKeys.correr[1].toLowerCase():
                             btnRun = false;
                             break;
                     }
@@ -424,13 +450,23 @@ function noChao(){
                                 direitaOp1 : document.querySelector('div#direita div#dop1'),
                                 esquerdaOp1 : document.querySelector('div#esquerda div#eop1'),
                                 pularOp1 : document.querySelector('div#pular div#pop1'),
-                                correrOp1 : document.querySelector('div#correr div#cop1')
+                                correrOp1 : document.querySelector('div#correr div#cop1'),
+
+                                direitaOp2 : document.querySelector('div#direita div#dop2'),
+                                esquerdaOp2 : document.querySelector('div#esquerda div#eop2'),
+                                pularOp2 : document.querySelector('div#pular div#pop2'),
+                                correrOp2 : document.querySelector('div#correr div#cop2')
                             }
 
-                            opsComand.direitaOp1.innerHTML = '<p class="text_key">' + comandsKeys.direita + '</p>';
-                            opsComand.esquerdaOp1.innerHTML = '<p class="text_key">' + comandsKeys.esquerda + '</p>';
-                            opsComand.correrOp1.innerHTML = '<p class="text_key">' + comandsKeys.correr + '</p>';
-                            opsComand.pularOp1.innerHTML = '<p class="text_key">' + comandsKeys.pular + '</p>';
+                            opsComand.direitaOp1.innerHTML = '<p class="text_key">' + comandsKeys.direita[0] + '</p>';
+                            opsComand.esquerdaOp1.innerHTML = '<p class="text_key">' + comandsKeys.esquerda[0] + '</p>';
+                            opsComand.correrOp1.innerHTML = '<p class="text_key">' + comandsKeys.correr[0] + '</p>';
+                            opsComand.pularOp1.innerHTML = '<p class="text_key">' + comandsKeys.pular[0] + '</p>';
+
+                            opsComand.direitaOp2.innerHTML = '<p class="text_key">' + comandsKeys.direita[1] + '</p>';
+                            opsComand.esquerdaOp2.innerHTML = '<p class="text_key">' + comandsKeys.esquerda[1] + '</p>';
+                            opsComand.correrOp2.innerHTML = '<p class="text_key">' + comandsKeys.correr[1] + '</p>';
+                            opsComand.pularOp2.innerHTML = '<p class="text_key">' + comandsKeys.pular[1] + '</p>';
 
                             document.querySelectorAll(".key_box").forEach((e)=>{
                                 e.addEventListener('click', ()=>{
@@ -453,17 +489,29 @@ function noChao(){
                                         
                                         let dados = JSON.parse(localStorage.getItem('saves'));
 
-                                        if(e.closest('#direita')){
-                                            dados.comandsKeys.direita = evento.key.toLowerCase()
+                                        if(e.closest('#dop1')){
+                                            dados.comandsKeys.direita[0] = evento.key.toLowerCase()
                                         }else
-                                        if(e.closest('#esquerda')){
-                                            dados.comandsKeys.esquerda = evento.key.toLowerCase()
+                                        if(e.closest('#eop1')){
+                                            dados.comandsKeys.esquerda[0] = evento.key.toLowerCase()
                                         }else
-                                        if(e.closest('#pular')){
-                                            dados.comandsKeys.pular = evento.key.toLowerCase()
+                                        if(e.closest('#pop1')){
+                                            dados.comandsKeys.pular[0] = evento.key.toLowerCase()
                                         }else
-                                        if(e.closest('#correr')){
-                                            dados.comandsKeys.correr = evento.key.toLowerCase()
+                                        if(e.closest('#cop1')){
+                                            dados.comandsKeys.correr[0] = evento.key.toLowerCase()
+                                        }else
+                                        if(e.closest('#dop2')){
+                                            dados.comandsKeys.direita[1] = evento.key.toLowerCase()
+                                        }else
+                                        if(e.closest('#eop2')){
+                                            dados.comandsKeys.esquerda[1] = evento.key.toLowerCase()
+                                        }else
+                                        if(e.closest('#pop2')){
+                                            dados.comandsKeys.pular[1] = evento.key.toLowerCase()
+                                        }else
+                                        if(e.closest('#cop2')){
+                                            dados.comandsKeys.correr[1] = evento.key.toLowerCase()
                                         }
 
                                         localStorage.setItem('saves', JSON.stringify(dados))
@@ -596,7 +644,7 @@ elementosFuncionais.forEach((element)=>{
     
     newElement.style.width = element.tamanho.width + 'em'
     newElement.style.height = element.tamanho.height + 'em'
-    newElement.style.position = 'absolute'
+    newElement.style.position = 'fixed'
     newElement.style.bottom = element.position.y + 'em'
     newElement.style.left = element.position.x + 'em'
     newElement.style.backgroundImage = `url(${element.src})`
@@ -605,47 +653,32 @@ elementosFuncionais.forEach((element)=>{
 
     document.querySelector('#canvas').appendChild(newElement)
 })
-function gameLoop() {
+let ultimoTempo = performance.now();
+function gameLoop(tempoAtual) {
     if (!jogoRodando) {
         animationFrameId = null;
         return;
     }
 
-    fisica.addGravity();
-    atualizar.update();
+    // Tempo passado desde o último frame, em segundos
+    const deltaTime = (tempoAtual - ultimoTempo) / 1000;
+
+    ultimoTempo = tempoAtual;
+
+    fisica.addGravity(deltaTime);
+    atualizar.update(deltaTime);
 
     gerenciaColisao.chekingCollison();
 
     gerenciaColisao.ativarFuncaoObjeto();
 
-
-
-
-
     //--------------------------------morte-----------------------------------//
-    //--------------------------------morte-----------------------------------//
-    //--------------------------------morte-----------------------------------//
-    //--------------------------------morte-----------------------------------//
-    
-    
-    
-    if(player.position.y <= 0){
+
+    if (player.position.y <= 0) {
         acoesInterface.resetGame();
     }
-    
-    
-    
+
     //--------------------------------morte-----------------------------------//
-    //--------------------------------morte-----------------------------------//
-    //--------------------------------morte-----------------------------------//
-    //--------------------------------morte-----------------------------------//
-    
-    
-
-
-
-
-
 
     if (jogoRodando) {
         animationFrameId = requestAnimationFrame(gameLoop);

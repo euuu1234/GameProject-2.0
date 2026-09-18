@@ -12,7 +12,7 @@ const player = {
     },
     tamanho:{
         width: 2,
-        height: 5,
+        height: 6,
     },
     fisica: {
         velocityX: 0,
@@ -26,7 +26,7 @@ const player = {
 const configFase = {
     width: 800,
     height: 600,
-    gravity: 0.2,
+    gravity: 12,
     velMaxY: player.tamanho.height,
     velMaxX: player.tamanho.width,
     larguraFase: 75,
@@ -52,11 +52,11 @@ const elementosDoJogo = [
     {
         position: {
             x: 10,
-            y: 10,
+            y: 19,
         },
         tamanho: {
             width: 5,
-            height: 15,
+            height: 8,
         },
         color: cor3,
         element: null,
@@ -64,11 +64,23 @@ const elementosDoJogo = [
     {
         position: {
             x: 15,
-            y: 17,
+            y: 19,
         },
         tamanho: {
             width: 5,
             height: 3,
+        },
+        color: cor3,
+        element: null,
+    },
+    {
+        position: {
+            x: 64,
+            y: 8,
+        },
+        tamanho: {
+            width: 6,
+            height: 8,
         },
         color: cor3,
         element: null,
@@ -88,7 +100,7 @@ const elementosDoJogo = [
     {
         position: {
             x: 0,
-            y: 14,
+            y: 16,
         },
         tamanho: {
             width: 50,
@@ -103,7 +115,7 @@ const elementosDoJogo = [
             y: 8,
         },
         tamanho: {
-            width: 5,
+            width: 9,
             height: 3,
         },
         color: cor3,
@@ -116,7 +128,7 @@ const elementosFuncionais = [
 ]
 
 elementosFuncionais[0].position.x = 1;
-elementosFuncionais[0].position.y = 17;
+elementosFuncionais[0].position.y = 19;
 
 
 
