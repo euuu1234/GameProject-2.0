@@ -70,6 +70,27 @@ const elementsFunction = {
             const html = await response.text();
 
             menuFaseVencida.innerHTML = html;
+
+            menuFaseVencida.querySelectorAll('img').forEach((e)=>{
+                    switch(e.closest('[id]')?.id){
+                        case 'fase_1':
+                            e.src = '../Assets/img-fases/fase1.jpg';
+                            e.addEventListener('click', ()=>{window.location.replace('./?fase=1')});
+                            break;
+                        case 'fase_2':
+                            e.src = '../Assets/img-fases/fase2.jpg';
+                            e.addEventListener('click', ()=>{window.location.replace('./?fase=2')});
+                            break;
+                        case 'fase_3':
+                            e.src = '../Assets/img-fases/fase3.jpg';
+                            e.addEventListener('click', ()=>{window.location.replace('./?fase=3')});
+                            break;
+                        case 'fase_4':
+                            e.src = '../Assets/img-fases/fase4.jpg';
+                            e.addEventListener('click', ()=>{window.location.replace('./?fase=4')});
+                            break;
+                    }
+                })
         }
 
         fetchMenuFaseVencida();
