@@ -31,19 +31,19 @@ document.addEventListener("click", function(event) {
                 menu_fase.querySelectorAll('img').forEach((e)=>{
                     switch(e.closest('[id]')?.id){
                         case 'fase_1':
-                            e.src = './Assets/img-fases/fase1.jpg';
+                            e.src = './Assets/img-fases/fase1.png';
                             e.addEventListener('click', ()=>{window.location.replace('./AQP_game/?fase=1')});
                             break;
                         case 'fase_2':
-                            e.src = './Assets/img-fases/fase2.jpg'
+                            e.src = './Assets/img-fases/fase2.png'
                             e.addEventListener('click', ()=>{window.location.replace('./AQP_game/?fase=2')});
                             break;
                         case 'fase_3':
-                            e.src = './Assets/img-fases/fase3.jpg'
+                            e.src = './Assets/img-fases/fase3.png'
                             e.addEventListener('click', ()=>{window.location.replace('./AQP_game/?fase=3')});
                             break;
                         case 'fase_4':
-                            e.src = './Assets/img-fases/fase4.jpg'
+                            e.src = './Assets/img-fases/fase4.png'
                             e.addEventListener('click', ()=>{window.location.replace('./AQP_game/?fase=4')});
                             break;
                     }
