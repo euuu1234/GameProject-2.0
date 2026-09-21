@@ -18,12 +18,13 @@ const player = {
         velocityX: 0,
         velocityY: 0,
     },
-    speedX: 0.5,
+    speedX: 0.2,
     speedY: 0.5,
     element: null,
-    jump: 1.2,
+    jump: 1.4,
 };
 const configFase = {
+    run: 20,
     width: 800,
     height: 600,
     gravity: 11,

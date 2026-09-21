@@ -11,22 +11,23 @@ const player = {
         y: 30,
     },
     tamanho:{
-        width: 2,
-        height: 5,
+        width: 3,
+        height: 6,
     },
     fisica: {
         velocityX: 0,
         velocityY: 0,
     },
     speedY: 0.5,
-    speedX: 0.5,
+    speedX: 0.2,
     element: null,
-    jump: 1.2,
+    jump: 1.3,
 };
 const configFase = {
+    run: 18,
     width: 800,
     height: 600,
-    gravity: 12,
+    gravity: 11,
     velMaxY: player.tamanho.height,
     velMaxX: player.tamanho.width,
     larguraFase: 100,

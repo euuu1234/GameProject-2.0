@@ -162,7 +162,7 @@ function noChao(){
         run:
             function(tempo){
                 if(player.speedXInicial >= player.speedX){
-                    player.speedX += 10 * tempo;
+                    player.speedX += configFase.run * tempo;
                 }
             },
         noRun:
@@ -350,6 +350,14 @@ function noChao(){
 
             element.style.left = player.position.x +'em';
             element.style.bottom = player.position.y +'em';
+
+            const img = document.createElement('img');
+            
+            img.style.height = '100%';
+            img.style.position = 'absolute';
+            img.style.right = '0';
+
+            player.element.appendChild(img);
         },
         function() {
                 window.addEventListener('keydown', (event) => {
@@ -699,6 +707,8 @@ function gameLoop(tempoAtual) {
         acoesInterface.resetGame();
     }
 
+    atualizarAnimacao();
+
     //--------------------------------morte-----------------------------------//
 
     if (jogoRodando) {
@@ -706,4 +716,129 @@ function gameLoop(tempoAtual) {
     }
 }
 
-acoesInterface.startGame()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function atualizarAnimacao(verificar = noChao()){
+    if(
+        player.fisica.velocityX > 0
+    ){
+        player.element.style.transform = 'scaleX(1)'
+    }else
+    if(
+        player.fisica.velocityX < 0
+    ){
+        player.element.style.transform = 'scaleX(-1)'
+    }
+    if(verificar === true){
+        if(btnUp){
+            animar("pular_")
+        }else if(
+            player.fisica.velocityX > 0 ||
+            player.fisica.velocityX < 0
+        ){
+            animar("andar_");
+        }
+    }else {
+        if(player.fisica.velocityY > 0){
+            animar("pular_")
+        }else if(player.fisica.velocityY < 0){
+            animar("cair_")
+        }
+    }
+}
+
+function animar(acao){
+    if(player.animacao.imagem[0] !== acao){
+        player.animacao.imagem[0] = acao;
+        player.animacao.imagem[1] = 1;
+        player.animacao.imagem[2] = 1;
+    }
+    
+
+    player.element.querySelector('img').src = "../Assets/img-animacoes/" + acao + player.animacao.imagem[1] + ".png";
+
+    player.animacao.imagem[2] += 1;
+
+    if(
+        player.animacao.imagem[2] %
+        player.animacao.nameImg[acao][0] === 0
+
+    ){
+        if(acao !== "pular_" && acao !== "cair_")player.animacao.imagem[1] += 1;
+
+        else if(player.animacao.nameImg[acao][1] < player.animacao.imagem[1]){
+            player.animacao.imagem[1] += 1;
+        }
+    }
+
+
+    if(
+        (player.animacao.imagem[2] >=
+        (player.animacao.nameImg[acao][0] * player.animacao.nameImg[acao][1])) &&
+        acao !== "pular_" &&
+        acao !== "cair_" 
+    ){
+        player.animacao.imagem[1] = 1;
+        player.animacao.imagem[2] = 1;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+player.animacao = {
+    nameImg: {
+        "andar_": [3, 24],
+        "pular_": [7, 3],
+        "cair_": [3, 9],
+    },
+    imagem: [
+        'andar_',
+        1,
+        1
+    ]
+};
+acoesInterface.startGame();
