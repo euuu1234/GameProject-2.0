@@ -18,6 +18,12 @@ let btnRun = false;
 let jump = false;
 let velXTrava = false;
 
+const idsBoxKey = {
+    '#dop': 'direita',
+    '#eop': 'esquerda',
+    '#pop': 'pular',
+    '#cop': 'correr',
+}
 
 const comandsKeys = {
     direita: null,
@@ -71,24 +77,15 @@ const elementsFunction = {
 
             menuFaseVencida.innerHTML = html;
 
+
             menuFaseVencida.querySelectorAll('img').forEach((e)=>{
-                    switch(e.closest('[id]')?.id){
-                        case 'fase_1':
-                            e.src = '../Assets/img-fases/fase1.png';
-                            e.addEventListener('click', ()=>{window.location.replace('./?fase=1')});
-                            break;
-                        case 'fase_2':
-                            e.src = '../Assets/img-fases/fase2.png';
-                            e.addEventListener('click', ()=>{window.location.replace('./?fase=2')});
-                            break;
-                        case 'fase_3':
-                            e.src = '../Assets/img-fases/fase3.png';
-                            e.addEventListener('click', ()=>{window.location.replace('./?fase=3')});
-                            break;
-                        case 'fase_4':
-                            e.src = '../Assets/img-fases/fase4.png';
-                            e.addEventListener('click', ()=>{window.location.replace('./?fase=4')});
-                            break;
+                    const elemento = e.closest('[id]');
+                    const id = elemento ? elemento.id : '';
+                    const ultimosDois = parseInt(id.slice(-2));
+
+                    if(ultimosDois > 0){
+                        e.src = `../Assets/img-fases/fase_0${ultimosDois}.png`;
+                        e.addEventListener('click', ()=>{window.location.replace(`./?fase=${ultimosDois}`)});
                     }
                 })
         }
@@ -109,10 +106,9 @@ function noChao(){
 
     const acoesJogo = {
         jump:
-            function() {
-                const verificar = noChao();
+            function(chao = noChao()) {
                 if(
-                    verificar &&
+                    chao &&
                     !jump
                 ){
                     player.fisica.velocityY = player.jump;
@@ -123,46 +119,46 @@ function noChao(){
                     jump = true;
                     velXTrava = true;
                 }else{
-                    if(verificar){
+                    if(chao){
                         velXTrava = false;
                         jump = false;
                     }
                 }
             },
         right:
-            function(tempo) {
+            function() {
                 let somador;
 
                 if(
                     player.fisica.velocityX < player.speedX &&
                     !velXTrava
                 ){
-                    somador = 100 / configFase.proporcao;
+                    somador = 10 / configFase.proporcao;
                 }else{
                     somador = 0;
                 }
 
-                player.fisica.velocityX += somador * tempo;
+                player.fisica.velocityX += somador;
             },
         left:
-            function(tempo) {
+            function() {
                 let somador;
 
                 if(
                     player.fisica.velocityX > (-player.speedX) &&
                     !velXTrava
                 ){
-                    somador = 100 / configFase.proporcao;
+                    somador = 10 / configFase.proporcao;
                 }else{
                     somador = 0;
                 }
 
-                player.fisica.velocityX -= somador * tempo;
+                player.fisica.velocityX -= somador;
             },
         run:
-            function(tempo){
+            function(){
                 if(player.speedXInicial >= player.speedX){
-                    player.speedX += configFase.run * tempo;
+                    player.speedX += configFase.run;
                 }
             },
         noRun:
@@ -175,29 +171,24 @@ function noChao(){
     const fisica = {
         gravity:
             function(tempo) {
-                player.fisica.velocityY -= player.speedY * configFase.gravity * tempo;
+                player.fisica.velocityY -= configFase.gravity * tempo;
             },
         addGravity:
-            function(tempo){
+            function(tempo, chao){
                 if(
-                    player.fisica.velocityY < configFase.velMaxY &&
-                    player.fisica.velocityY > (-configFase.velMaxY)
+                    !chao
                 ){
                     fisica.gravity(tempo);
-                }else if(player.fisica.velocityY > 0){
-                    player.fisica.velocityY = configFase.velMaxY;
-                }else if(player.fisica.velocityY < 0){
-                    player.fisica.velocityY = (-configFase.velMaxY);
                 }
             },
         move:
-            function(eixo, objeto = null) {
+            function(t, eixo, objeto = null) {
                 if(eixo === 'y'){
-                    player.position.y += player.fisica.velocityY;
+                    player.position.y += player.fisica.velocityY * t;
                 }else if(
                     eixo === 'x'
                 ) {
-                    player.position.x += player.fisica.velocityX
+                    player.position.x += player.fisica.velocityX  * t;
                 }else if(
                     eixo === 'Ycol' 
                 ){
@@ -220,6 +211,12 @@ function noChao(){
                 ){
                     
                     if(
+                        (player.fisica.velocityX > 0 || player.fisica.velocityX < 0) &&
+                        everywherePosition(player).bottom == everywherePosition(objeto[1]).top
+                    ){
+                        player.position.x += player.fisica.velocityX  * t * 2;
+                        console.log('ssssssssssss');
+                    }else if(
                         player.fisica.velocityX > 0
                     ){
                         if(objeto.length <= 2){
@@ -242,7 +239,7 @@ function noChao(){
 
     const atualizar = {
         update:
-            function(tempo) {
+            function(tempo, chao) {
                 if(btnRight) acoesJogo.right(tempo);
                 else if(btnLeft) acoesJogo.left(tempo);
                 else {
@@ -254,7 +251,7 @@ function noChao(){
                 if(btnRun) acoesJogo.run(tempo);
                 if(!btnRun) acoesJogo.noRun();
 
-                if(jump || btnUp) acoesJogo.jump();
+                if(jump || btnUp) acoesJogo.jump(chao);
             },
         updatePlayerPosition:
             function() {
@@ -325,7 +322,11 @@ function noChao(){
                 const div = document.createElement('div');
                 div.style.width = element.tamanho.width + "em"
                 div.style.height = element.tamanho.height + "em"
-                div.style.background = element.color
+                if(element.id !== undefined)
+                div.style.backgroundImage = 
+                `url('../Assets/img-objetos/OBJETO${element.id}.png')`; else
+                div.style.backgroundColor = element.color
+                div.style.backgroundSize = 'cover'
                 div.style.position = 'fixed'
                 div.style.bottom = element.position.y + "em"
                 div.style.left = element.position.x + "em"
@@ -343,8 +344,8 @@ function noChao(){
             element.style.width = player.tamanho.width + "em";
             element.style.height = player.tamanho.height + "em";
 
-            element.style.backgroundColor = 'yellow';
             element.style.position = 'fixed';
+            element.style.backgroundColor = 'yellow '
 
             element.style.zIndex = '9999';
 
@@ -517,30 +518,13 @@ function noChao(){
                                         e.removeAttribute('style');
                                         
                                         let dados = JSON.parse(localStorage.getItem('saves'));
-
-                                        if(e.closest('#dop1')){
-                                            dados.comandsKeys.direita[0] = evento.key.toLowerCase()
-                                        }else
-                                        if(e.closest('#eop1')){
-                                            dados.comandsKeys.esquerda[0] = evento.key.toLowerCase()
-                                        }else
-                                        if(e.closest('#pop1')){
-                                            dados.comandsKeys.pular[0] = evento.key.toLowerCase()
-                                        }else
-                                        if(e.closest('#cop1')){
-                                            dados.comandsKeys.correr[0] = evento.key.toLowerCase()
-                                        }else
-                                        if(e.closest('#dop2')){
-                                            dados.comandsKeys.direita[1] = evento.key.toLowerCase()
-                                        }else
-                                        if(e.closest('#eop2')){
-                                            dados.comandsKeys.esquerda[1] = evento.key.toLowerCase()
-                                        }else
-                                        if(e.closest('#pop2')){
-                                            dados.comandsKeys.pular[1] = evento.key.toLowerCase()
-                                        }else
-                                        if(e.closest('#cop2')){
-                                            dados.comandsKeys.correr[1] = evento.key.toLowerCase()
+                                        
+                                        for(let elemento in idsBoxKey){
+                                            if(e.closest(elemento + 1)){
+                                                dados.comandsKeys[idsBoxKey[elemento]][0] = evento.key.toLowerCase()
+                                            }else if(e.closest(elemento + 2)){
+                                                dados.comandsKeys[idsBoxKey[elemento]][1] = evento.key.toLowerCase()
+                                            }
                                         }
 
                                         localStorage.setItem('saves', JSON.stringify(dados))
@@ -585,48 +569,48 @@ function noChao(){
             return verificacao;
         },
 
-        futureX: function(){
+        futureX: function(t){
             const valores = {
-                x: player.fisica.velocityX,
+                x: player.fisica.velocityX * t,
                 y: 0
             }
 
             return valores;
         },
 
-        futureY: function(){
+        futureY: function(t){
             const valores = {
                 x: 0,
-                y: player.fisica.velocityY
+                y: player.fisica.velocityY * t
             }
 
             return valores;
         },
 
-        chekingCollison: function(){
+        chekingCollison: function(t){
 
             const checagemY = gerenciaColisao.checkIntersection(
-                gerenciaColisao.futureY()
+                gerenciaColisao.futureY(t)
             );
 
             const checagemX = gerenciaColisao.checkIntersection(
-                gerenciaColisao.futureX()
+                gerenciaColisao.futureX(t)
             );
 
             if(
                 checagemY[0] === false
             ){
-                fisica.move('y')
+                fisica.move(t, 'y')
             }else {
-                fisica.move('Ycol', checagemY)
+                fisica.move(t, 'Ycol', checagemY)
             }
 
             if(
                 checagemX[0] === false
             ){
-                fisica.move('x')
+                fisica.move(t, 'x')
             }else {
-                fisica.move('Xcol', checagemX)
+                fisica.move(t, 'Xcol', checagemX)
             }
         },
 
@@ -682,6 +666,7 @@ elementosFuncionais.forEach((element)=>{
 
     document.querySelector('#canvas').appendChild(newElement)
 })
+
 let ultimoTempo = performance.now();
 function gameLoop(tempoAtual) {
     if (!jogoRodando) {
@@ -694,10 +679,12 @@ function gameLoop(tempoAtual) {
 
     ultimoTempo = tempoAtual;
 
-    fisica.addGravity(deltaTime);
-    atualizar.update(deltaTime);
+    const verificar = noChao();
 
-    gerenciaColisao.chekingCollison();
+    fisica.addGravity(deltaTime, verificar);
+    atualizar.update(deltaTime, verificar);
+
+    gerenciaColisao.chekingCollison(deltaTime);
 
     gerenciaColisao.ativarFuncaoObjeto();
 
@@ -707,7 +694,7 @@ function gameLoop(tempoAtual) {
         acoesInterface.resetGame();
     }
 
-    atualizarAnimacao();
+    atualizarAnimacao(verificar);
 
     //--------------------------------morte-----------------------------------//
 
@@ -733,6 +720,7 @@ function gameLoop(tempoAtual) {
 
 
 function atualizarAnimacao(verificar = noChao()){
+    
     if(
         player.fisica.velocityX > 0
     ){
@@ -751,7 +739,7 @@ function atualizarAnimacao(verificar = noChao()){
             player.fisica.velocityX < 0
         ){
             animar("andar_");
-        }
+        }else animar('parar_')
     }else {
         if(player.fisica.velocityY > 0){
             animar("pular_")
@@ -775,12 +763,12 @@ function animar(acao){
 
     if(
         player.animacao.imagem[2] %
-        player.animacao.nameImg[acao][0] === 0
+        player.animacao.caracteristicasImg[acao].duracao === 0
 
     ){
         if(acao !== "pular_" && acao !== "cair_")player.animacao.imagem[1] += 1;
 
-        else if(player.animacao.nameImg[acao][1] < player.animacao.imagem[1]){
+        else if(player.animacao.caracteristicasImg[acao].quantidade > player.animacao.imagem[1]){
             player.animacao.imagem[1] += 1;
         }
     }
@@ -788,7 +776,7 @@ function animar(acao){
 
     if(
         (player.animacao.imagem[2] >=
-        (player.animacao.nameImg[acao][0] * player.animacao.nameImg[acao][1])) &&
+        (player.animacao.caracteristicasImg[acao].duracao * player.animacao.caracteristicasImg[acao].quantidade)) &&
         acao !== "pular_" &&
         acao !== "cair_" 
     ){
@@ -830,10 +818,23 @@ function animar(acao){
 
 
 player.animacao = {
-    nameImg: {
-        "andar_": [3, 24],
-        "pular_": [7, 3],
-        "cair_": [3, 9],
+    caracteristicasImg: {
+        "andar_": {
+            duracao: 3,
+            quantidade: 24
+        },
+        "pular_": {
+            duracao: 7, 
+            quantidade: 3
+        },
+        "cair_": {
+            duracao: 3,
+            quantidade: 9
+        },
+        "parar_": {
+            duracao: 3, 
+            quantidade: 7
+        },
     },
     imagem: [
         'andar_',

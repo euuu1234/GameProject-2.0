@@ -18,17 +18,17 @@ const player = {
         velocityX: 0,
         velocityY: 0,
     },
-    speedY: 0.2,
-    speedX: 0.2,
+    speedY: 30,
+    speedX: 10,
     element: null,
-    jump: 1.2,
+    jump: 50,
 };
 const configFase = {
-    run: 20,
+    run: 15,
     width: 800,
     height: 600,
-    gravity: 25,
-    velMaxY: player.tamanho.height,
+    gravity: 150,
+    velMaxY: player.tamanho.height * 5,
     velMaxX: player.tamanho.width,
     larguraFase: 75,
     positionInitial: {
@@ -41,6 +41,19 @@ const elementosDoJogo = [
     {
         position: {
             x: 0,
+            y: 16,
+        },
+        tamanho: {
+            width: 50,
+            height: 3,
+        },
+        color: cor3,
+        element: null,
+        id: 1
+    },
+    {
+        position: {
+            x: 0,
             y: 0,
         },
         tamanho: {
@@ -49,42 +62,7 @@ const elementosDoJogo = [
         },
         color: cor1,
         element: null,
-    },
-    {
-        position: {
-            x: 10,
-            y: 19,
-        },
-        tamanho: {
-            width: 5,
-            height: 8,
-        },
-        color: cor3,
-        element: null,
-    },
-    {
-        position: {
-            x: 15,
-            y: 19,
-        },
-        tamanho: {
-            width: 5,
-            height: 3,
-        },
-        color: cor3,
-        element: null,
-    },
-    {
-        position: {
-            x: 64,
-            y: 8,
-        },
-        tamanho: {
-            width: 6,
-            height: 8,
-        },
-        color: cor3,
-        element: null,
+        id: 2
     },
     {
         position: {
@@ -97,18 +75,7 @@ const elementosDoJogo = [
         },
         color: cor3,
         element: null,
-    },
-    {
-        position: {
-            x: 0,
-            y: 16,
-        },
-        tamanho: {
-            width: 50,
-            height: 3,
-        },
-        color: cor3,
-        element: null,
+        id: 3
     },
     {
         position: {
@@ -121,6 +88,46 @@ const elementosDoJogo = [
         },
         color: cor3,
         element: null,
+        id: 4
+    },
+    {
+        position: {
+            x: 64,
+            y: 8,
+        },
+        tamanho: {
+            width: 6,
+            height: 8,
+        },
+        color: cor3,
+        element: null,
+        id: 5
+    },
+    {
+        position: {
+            x: 10,
+            y: 19,
+        },
+        tamanho: {
+            width: 5,
+            height: 8,
+        },
+        color: cor3,
+        element: null,
+        id: 6
+    },
+    {
+        position: {
+            x: 15,
+            y: 19,
+        },
+        tamanho: {
+            width: 5,
+            height: 3,
+        },
+        color: cor3,
+        element: null,
+        id: 7
     },
 ];
 const elementosFuncionais = [
