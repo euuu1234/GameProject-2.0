@@ -70,6 +70,7 @@ const elementsFunction = {
         menuFaseVencida.classList.add('menu');
         menuFaseVencida.style.display = 'flex';
         menuFaseVencida.style.position = 'fixed';
+        menuFaseVencida.style.zIndex = '9999';
 
         async function fetchMenuFaseVencida() {
             const response = await fetch('../interface/menu_fase-vencida.html');
@@ -120,6 +121,15 @@ function noChao(){
                     velXTrava = true;
                 }else{
                     if(chao){
+                        if(!btnRun){
+                           acoesJogo.noRun()
+                        }
+                        if (btnRight) {
+                            player.fisica.velocityX = player.speedX
+                        }
+                        if (btnLeft) {
+                            player.fisica.velocityX = -player.speedX
+                        }
                         velXTrava = false;
                         jump = false;
                     }
@@ -215,7 +225,7 @@ function noChao(){
                         everywherePosition(player).bottom == everywherePosition(objeto[1]).top
                     ){
                         player.position.x += player.fisica.velocityX  * t * 2;
-                        console.log('ssssssssssss');
+                        player.position.y = objeto[1].position.y + objeto[1].tamanho.height;
                     }else if(
                         player.fisica.velocityX > 0
                     ){
@@ -323,11 +333,11 @@ function noChao(){
                 div.style.width = element.tamanho.width + "em"
                 div.style.height = element.tamanho.height + "em"
                 if(element.id !== undefined)
-                div.style.backgroundImage = 
+                /* div.style.backgroundImage = 
                 `url('../Assets/img-objetos/OBJETO${element.id}.png')`; else
-                div.style.backgroundColor = element.color
+                div.style.backgroundColor = element.color */
                 div.style.backgroundSize = 'cover'
-                div.style.position = 'fixed'
+                div.style.position = 'absolute'
                 div.style.bottom = element.position.y + "em"
                 div.style.left = element.position.x + "em"
                 
@@ -344,10 +354,8 @@ function noChao(){
             element.style.width = player.tamanho.width + "em";
             element.style.height = player.tamanho.height + "em";
 
-            element.style.position = 'fixed';
+            element.style.position = 'absolute';
             element.style.backgroundColor = 'yellow '
-
-            element.style.zIndex = '9999';
 
             element.style.left = player.position.x +'em';
             element.style.bottom = player.position.y +'em';
@@ -542,6 +550,12 @@ function noChao(){
                 childList: true,
                 subtree: true
             });
+        },
+        function() {
+            document.querySelector('#canvas').style.height = configFase.height + 'em';
+            document.querySelector('#canvas').style.backgroundImage = 'url(../Assets/img-fases/fase_1.jpg)';
+            document.querySelector('#canvas').style.backgroundSize = '100%';
+            
         }
     ]
 
@@ -657,10 +671,10 @@ elementosFuncionais.forEach((element)=>{
     
     newElement.style.width = element.tamanho.width + 'em'
     newElement.style.height = element.tamanho.height + 'em'
-    newElement.style.position = 'fixed'
+    newElement.style.position = 'absolute'
     newElement.style.bottom = element.position.y + 'em'
     newElement.style.left = element.position.x + 'em'
-    newElement.style.backgroundImage = `url(${element.src})`
+    /* newElement.style.backgroundImage = `url(${element.src})` */
     newElement.style.backgroundSize = '100% 100%'
     newElement.style.backgroundRepeat = 'no-repeat'
 

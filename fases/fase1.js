@@ -25,8 +25,6 @@ const player = {
 };
 const configFase = {
     run: 15,
-    width: 800,
-    height: 600,
     gravity: 150,
     velMaxY: player.tamanho.height * 5,
     velMaxX: player.tamanho.width,
@@ -37,6 +35,8 @@ const configFase = {
     }
 };
 configFase.proporcao = window.screen.width/configFase.larguraFase
+configFase.height = configFase.larguraFase/1.76
+
 const elementosDoJogo = [
     {
         position: {
