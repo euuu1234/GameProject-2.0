@@ -34,7 +34,7 @@ document.addEventListener("click", function(event) {
                     const ultimosDois = parseInt(id.slice(-2));
 
                     if(ultimosDois > 0){
-                        e.src = `./Assets/img-fases/fase_0${ultimosDois}.png`;
+                        e.src = `./Assets/img-fases/fase_0${ultimosDois}.jpeg`;
                         e.addEventListener('click', ()=>{window.location.replace(`./AQP_game/?fase=${ultimosDois}`)});
                     }
                 })
@@ -49,6 +49,7 @@ document.addEventListener("click", function(event) {
 
 });
 
+
 let dados = JSON.parse(localStorage.getItem('saves'))
 
 function dadosIniciais() {
@@ -59,14 +60,18 @@ function dadosIniciais() {
                 direita: ['d', 'ArrowRight'],
                 esquerda: ['a', 'ArrowLeft'],
                 pular: ['w', 'ArrowUp'],
-                correr: ['shift', 'Space']
-            }
+                correr: ['shift', 'Space'],
+                agachar: ['s', 'arrowdown']
+            },
+            plataforma: 'pc'
         };
+        console.log(dados)
 
         localStorage.setItem('saves', JSON.stringify(dados))
     }
 
 }
+
 
 function dadosConfig() {
 
@@ -75,22 +80,26 @@ function dadosConfig() {
         esquerdaOp1 : document.querySelector('div#esquerda div#eop1'),
         pularOp1 : document.querySelector('div#pular div#pop1'),
         correrOp1 : document.querySelector('div#correr div#cop1'),
-
+        agacharOp1 : document.querySelector('div#agachar div#aop1'),
+        
         direitaOp2 : document.querySelector('div#direita div#dop2'),
         esquerdaOp2 : document.querySelector('div#esquerda div#eop2'),
         pularOp2 : document.querySelector('div#pular div#pop2'),
-        correrOp2 : document.querySelector('div#correr div#cop2')
+        correrOp2 : document.querySelector('div#correr div#cop2'),
+        agacharOp2 : document.querySelector('div#agachar div#aop2'),
     }
 
     opsComand.direitaOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.direita[0] + '</p>';
     opsComand.esquerdaOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.esquerda[0] + '</p>';
     opsComand.correrOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.correr[0] + '</p>';
-    opsComand.pularOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.pular[0] + '</p>';
-
+    opsComand.pularOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.pular[0] + '</p>'; 
+    opsComand.agacharOp1.innerHTML = '<p class="text_key">' + dados.comandsKeys.agachar[0] + '</p>'; 
+    
     opsComand.direitaOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.direita[1] + '</p>';
     opsComand.esquerdaOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.esquerda[1] + '</p>';
     opsComand.correrOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.correr[1] + '</p>';
     opsComand.pularOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.pular[1] + '</p>';
+    opsComand.agacharOp2.innerHTML = '<p class="text_key">' + dados.comandsKeys.agachar[1] + '</p>'; 
 }
 
 function initConfig() {
@@ -126,6 +135,9 @@ function initConfig() {
                     if(e.closest('#cop1')){
                         dados.comandsKeys.correr[0] = evento.key.toLowerCase()
                     }else
+                    if(e.closest('#aop1')){
+                        dados.comandsKeys.agachar[0] = evento.key.toLowerCase()
+                    }else
                     if(e.closest('#dop2')){
                         dados.comandsKeys.direita[1] = evento.key.toLowerCase()
                     }else
@@ -137,6 +149,9 @@ function initConfig() {
                     }else
                     if(e.closest('#cop2')){
                         dados.comandsKeys.correr[1] = evento.key.toLowerCase()
+                    }else
+                    if(e.closest('#aop2')){
+                        dados.comandsKeys.agachar[1] = evento.key.toLowerCase()
                     }
 
                     localStorage.setItem('saves', JSON.stringify(dados))

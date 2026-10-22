@@ -8,14 +8,18 @@ const moduloFase = await import(`${fase}`);
 const {configFase, elementosDoJogo, player, emForPx, elementosFuncionais} = moduloFase;
 
 const corFimTela = 'black';
+
 let btnRight = false;
 let btnLeft = false;
 let btnUp = false;
 let btnDown = false;
+let btnRun = false;
+
+
 let animationFrameId = null;
 let jogoRodando = false;
-let btnRun = false;
 let jump = false;
+let agachado = false;
 let velXTrava = false;
 
 const idsBoxKey = {
@@ -23,13 +27,15 @@ const idsBoxKey = {
     '#eop': 'esquerda',
     '#pop': 'pular',
     '#cop': 'correr',
+    '#aop': 'agachar',
 }
 
 const comandsKeys = {
     direita: null,
     esquerda: null,
     pular: null,
-    correr: null
+    correr: null,
+    agachar: null
 }
 
 
@@ -61,6 +67,12 @@ function everywherePosition(element) {
     };
 }
 
+function proporcinamento() {
+    document.querySelectorAll('*').forEach ((element) => {
+        element.style.fontSize = configFase.proporcao + "px"
+    })
+}
+
 //funções de objetos funcionais
 const elementsFunction = {
     conclusaoFase: function(){
@@ -85,7 +97,7 @@ const elementsFunction = {
                     const ultimosDois = parseInt(id.slice(-2));
 
                     if(ultimosDois > 0){
-                        e.src = `../Assets/img-fases/fase_0${ultimosDois}.png`;
+                        e.src = `../Assets/img-fases/fase_0${ultimosDois}.jpeg`;
                         e.addEventListener('click', ()=>{window.location.replace(`./?fase=${ultimosDois}`)});
                     }
                 })
@@ -174,6 +186,22 @@ function noChao(){
         noRun:
             function(){
                 if(player.speedXInicial < player.speedX){player.speedX = player.speedXInicial;}
+            },
+        crouch:
+            function(){
+                player.tamanho.height = player.tamanho.height * 0.75
+                player.element.style.height = player.tamanho.height + 'em'
+
+                agachado = true
+            },
+        noCrouch:
+            function(){
+                player.tamanho.height = player.tamanho.heightPlay
+                if(!gerenciaColisao.checkIntersection()[0]){
+                    player.element.style.height = player.tamanho.height + 'em'
+
+                    agachado = false
+                }else player.tamanho.height = player.tamanho.height * 0.75
             }
         
     }
@@ -262,6 +290,13 @@ function noChao(){
                 if(!btnRun) acoesJogo.noRun();
 
                 if(jump || btnUp) acoesJogo.jump(chao);
+
+                if(
+                    btnDown && 
+                    player.tamanho.height === player.tamanho.heightPlay
+                ) acoesJogo.crouch();
+
+                if(!btnDown && agachado) acoesJogo.noCrouch();
             },
         updatePlayerPosition:
             function() {
@@ -282,6 +317,7 @@ function noChao(){
             function() {
                 if (!jogoRodando) {
                     jogoRodando = true;
+                    ultimoTempo = performance.now();
                     animationFrameId = requestAnimationFrame(gameLoop);
                 }
             },
@@ -317,35 +353,78 @@ function noChao(){
                 comandsKeys.esquerda = dados.comandsKeys.esquerda;
                 comandsKeys.pular = dados.comandsKeys.pular;
                 comandsKeys.correr = dados.comandsKeys.correr;
+                comandsKeys.agachar = dados.comandsKeys.agachar;
             }
     }
 
     const onLoad = [
         configuracoes,
-        function() {
-            document.querySelectorAll('*').forEach ((element) => {
-                element.style.fontSize = configFase.proporcao + "px"
-            })
-        },
-        function() {
-            elementosDoJogo.forEach(element => {
-                const div = document.createElement('div');
-                div.style.width = element.tamanho.width + "em"
-                div.style.height = element.tamanho.height + "em"
-                if(element.id !== undefined)
-                /* div.style.backgroundImage = 
-                `url('../Assets/img-objetos/OBJETO${element.id}.png')`; else
-                div.style.backgroundColor = element.color */
-                div.style.backgroundSize = 'cover'
-                div.style.position = 'absolute'
-                div.style.bottom = element.position.y + "em"
-                div.style.left = element.position.x + "em"
-                
+        proporcinamento,
+        /*
+          ---------------------------para desenvolvedores---------------------------------
+          ----para desenvolvedores--------------------------------------------------------
+          --------para desenvolvedores-----------------------para desenvolvedores---------
+          --------------------------------------para desenvolvedores----------------------
+          --------para desenvolvedores-----------------------------para desenvolvedores---
+          para desenvolvedores------------para desenvolvedores----------------------------
+          -----para desenvolvedores----------------para desenvolvedores-------------------
+          --------------------------------------para desenvolvedores----------------------
+          -------para desenvolvedores--------------------------------para desenvolvedores-
+        */
+        function(ativado = false  ) {
+            if(ativado){
+                elementosDoJogo.forEach(element => {
+                    const div = document.createElement('div');
+                    div.style.width = element.tamanho.width + "em"
+                    div.style.height = element.tamanho.height + "em"
+                    div.style.backgroundColor = element.color 
+                    div.style.position = 'absolute'
+                    div.style.bottom = element.position.y + "em"
+                    div.style.left = element.position.x + "em"
+                    
 
-                element.element = div
-                document.querySelector('#canvas').appendChild(div)
-            });
+                    element.element = div
+                    document.querySelector('#canvas').appendChild(div);
+
+                    (()=>{
+                                console.log('executou')
+                                document.addEventListener("mousemove", (event)=>{
+                                    const x = event.clientX
+                                    const y = event.clientY
+                                    player.position.x = emForPx(x)
+                                    player.position.y = emForPx(window.screen.height-y)
+                                })
+                    })();
+                })
+
+                
+                elementosFuncionais.forEach((element)=>{
+                    const newElement = document.createElement('div');
+                    
+                    newElement.style.width = element.tamanho.width + 'em'
+                    newElement.style.height = element.tamanho.height + 'em'
+                    newElement.style.position = 'absolute'
+                    newElement.style.bottom = element.position.y + 'em'
+                    newElement.style.left = element.position.x + 'em'
+                    newElement.style.backgroundColor = "rgba(123, 0, 0, 0.4)"
+                    newElement.style.backgroundSize = '100% 100%'
+                    newElement.style.backgroundRepeat = 'no-repeat'
+
+                    document.querySelector('#canvas').appendChild(newElement)
+                })
+            }
         },
+        /*
+          ---------------------------para desenvolvedores---------------------------------
+          ----para desenvolvedores--------------------------------------------------------
+          --------para desenvolvedores-----------------------para desenvolvedores---------
+          --------------------------------------para desenvolvedores----------------------
+          --------para desenvolvedores-----------------------------para desenvolvedores---
+          para desenvolvedores------------para desenvolvedores----------------------------
+          -----para desenvolvedores----------------para desenvolvedores-------------------
+          --------------------------------------para desenvolvedores----------------------
+          -------para desenvolvedores--------------------------------para desenvolvedores-
+        */
         function() {
             const element = document.createElement('div');
             player.element = element;
@@ -355,10 +434,10 @@ function noChao(){
             element.style.height = player.tamanho.height + "em";
 
             element.style.position = 'absolute';
-            element.style.backgroundColor = 'yellow '
 
             element.style.left = player.position.x +'em';
             element.style.bottom = player.position.y +'em';
+            element.style.backgroundColor = 'yellow';
 
             const img = document.createElement('img');
             
@@ -383,23 +462,13 @@ function noChao(){
                         case comandsKeys.pular[1].toLowerCase():
                             btnUp = true;
                             break;
-                        case 'ArrowDown':
+                        case comandsKeys.agachar[0].toLowerCase():
+                        case comandsKeys.agachar[1].toLowerCase():
                             btnDown = true;
                             break;
                         case comandsKeys.correr[0].toLowerCase():
                         case comandsKeys.correr[1].toLowerCase():
                             btnRun = true;
-                            break;
-                        case '=':
-                            (()=>{
-                                console.log('executou')
-                                document.addEventListener("mousemove", (event)=>{
-                                    const x = event.clientX
-                                    const y = event.clientY
-                                    player.position.x = emForPx(x)
-                                    player.position.y = emForPx(window.screen.height-y)
-                                })
-                            })();
                             break;
                         case 'escape':
                             const menuConfig = document.querySelector("#menu-config")
@@ -448,7 +517,8 @@ function noChao(){
                         case comandsKeys.pular[1].toLowerCase():
                             btnUp = false;
                             break;
-                        case 'ArrowDown':
+                        case comandsKeys.agachar[0].toLowerCase():
+                        case comandsKeys.agachar[1].toLowerCase():
                             btnDown = false;
                             break;
                         case comandsKeys.correr[0].toLowerCase():
@@ -489,22 +559,26 @@ function noChao(){
                                 esquerdaOp1 : document.querySelector('div#esquerda div#eop1'),
                                 pularOp1 : document.querySelector('div#pular div#pop1'),
                                 correrOp1 : document.querySelector('div#correr div#cop1'),
-
+                                agacharOp1 : document.querySelector('div#agachar div#aop1'),
+                                
                                 direitaOp2 : document.querySelector('div#direita div#dop2'),
                                 esquerdaOp2 : document.querySelector('div#esquerda div#eop2'),
                                 pularOp2 : document.querySelector('div#pular div#pop2'),
-                                correrOp2 : document.querySelector('div#correr div#cop2')
+                                correrOp2 : document.querySelector('div#correr div#cop2'),
+                                agacharOp2 : document.querySelector('div#agachar div#aop2'),
                             }
 
                             opsComand.direitaOp1.innerHTML = '<p class="text_key">' + comandsKeys.direita[0] + '</p>';
                             opsComand.esquerdaOp1.innerHTML = '<p class="text_key">' + comandsKeys.esquerda[0] + '</p>';
                             opsComand.correrOp1.innerHTML = '<p class="text_key">' + comandsKeys.correr[0] + '</p>';
                             opsComand.pularOp1.innerHTML = '<p class="text_key">' + comandsKeys.pular[0] + '</p>';
-
+                            opsComand.agacharOp1.innerHTML = '<p class="text_key">' + comandsKeys.agachar[0] + '</p>';
+                            
                             opsComand.direitaOp2.innerHTML = '<p class="text_key">' + comandsKeys.direita[1] + '</p>';
                             opsComand.esquerdaOp2.innerHTML = '<p class="text_key">' + comandsKeys.esquerda[1] + '</p>';
                             opsComand.correrOp2.innerHTML = '<p class="text_key">' + comandsKeys.correr[1] + '</p>';
                             opsComand.pularOp2.innerHTML = '<p class="text_key">' + comandsKeys.pular[1] + '</p>';
+                            opsComand.agacharOp2.innerHTML = '<p class="text_key">' + comandsKeys.agachar[1] + '</p>';
 
                             document.querySelectorAll(".key_box").forEach((e)=>{
                                 e.addEventListener('click', ()=>{
@@ -552,15 +626,25 @@ function noChao(){
             });
         },
         function() {
-            document.querySelector('#canvas').style.height = configFase.height + 'em';
-            document.querySelector('#canvas').style.backgroundImage = 'url(../Assets/img-fases/fase_1.jpg)';
-            document.querySelector('#canvas').style.backgroundSize = '100%';
-            
+            const canvas = document.querySelector('#canvas');
+            canvas.style.height = configFase.height + 'em';
+            console.log(fase)
+            canvas.style.backgroundImage = `url(../Assets/img-fases/fase_0${urlParams.get('fase')}.jpeg)`;
+            canvas.style.backgroundSize = '100%';
+
+            canvas.style.top = (window.innerHeight - canvas.offsetHeight)/2 + "px";
+
+            window.addEventListener('resize', ()=>{
+                configFase.proporcao = window.innerWidth/configFase.larguraFase
+                proporcinamento()
+
+                canvas.style.top = (window.innerHeight - canvas.offsetHeight)/2 + "px";
+            })
         }
     ]
 
     const gerenciaColisao = {
-        checkIntersection: function(somar, grupoDeElementos = elementosDoJogo){
+        checkIntersection: function(somar = {x: 0, y: 0}, grupoDeElementos = elementosDoJogo){
             const ladosPlayer = everywherePosition(player);
             let verificacao = [
                 false
@@ -645,7 +729,7 @@ function noChao(){
 
 //----------------------------------------------------criação de metodos----------------------------------------//
 
-const pixelsTela = window.screen.width
+const pixelsTela = window.innerWidth
 const emTela = emForPx(pixelsTela)
 
 const blocoFim = {
@@ -664,21 +748,6 @@ elementosDoJogo.push(blocoFim);
 
 onLoad.forEach((element)=>{
     element()
-})
-
-elementosFuncionais.forEach((element)=>{
-    const newElement = document.createElement('div');
-    
-    newElement.style.width = element.tamanho.width + 'em'
-    newElement.style.height = element.tamanho.height + 'em'
-    newElement.style.position = 'absolute'
-    newElement.style.bottom = element.position.y + 'em'
-    newElement.style.left = element.position.x + 'em'
-    /* newElement.style.backgroundImage = `url(${element.src})` */
-    newElement.style.backgroundSize = '100% 100%'
-    newElement.style.backgroundRepeat = 'no-repeat'
-
-    document.querySelector('#canvas').appendChild(newElement)
 })
 
 let ultimoTempo = performance.now();
@@ -856,4 +925,6 @@ player.animacao = {
         1
     ]
 };
+
+
 acoesInterface.startGame();

@@ -1,9 +1,9 @@
 import { portal } from "../objetos.js";
 
-const cor1 = 'rgb(0, 150, 20)';
+const cor1 = 'rgba(122, 211, 134, 0.4)';
 const cor2 = 'white';
 const cor4 = 'red';
-const cor3 = 'rgb(150,3,70)';
+const cor3 = 'rgba(150, 3, 3, 0.52)';
 
 const player = {
     position:{
@@ -23,6 +23,8 @@ const player = {
     element: null,
     jump: 50,
 };
+player.tamanho.heightPlay = player.tamanho.height
+
 const configFase = {
     run: 15,
     gravity: 150,
@@ -34,7 +36,7 @@ const configFase = {
         y: player.position.y
     }
 };
-configFase.proporcao = window.screen.width/configFase.larguraFase
+configFase.proporcao = window.innerWidth/configFase.larguraFase
 configFase.height = configFase.larguraFase/1.76
 
 const elementosDoJogo = [
